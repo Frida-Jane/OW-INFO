@@ -4,187 +4,708 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>海外仓市场资讯简报 · 首页</title>
+  <title>海外仓市场资讯简报 · 周刊</title>
   <style>
+    /* ============================================================
+       报告主题（Business Blue）—— 从各期 issue 抽取的公共样式
+       中间栏注入的 <article class="page"> 依赖此样式块渲染
+       ============================================================ */
     :root {
+      --page-bg: #FFFFFF;
+      --page-surface: #F6F8FA;
+      --page-surface-muted: #EBF0F5;
+      --page-text: #1F2328;
+      --page-text-secondary: #32383F;
+      --page-text-muted: #59636E;
+      --page-text-disabled: #8C959F;
+      --page-border: #D1D9E0;
+      --page-brand: #0969DA;
+      --page-brand-hover: #0751B3;
+      --page-brand-active: #053F8C;
+      --page-brand-soft: #EEF4FB;
+      --page-brand-soft-strong: #DCEBFA;
+      --page-brand-text: #0B3E73;
+
       --bg: #FFFFFF;
-      --surface: #F6F8FA;
-      --surface-muted: #EBF0F5;
+      --bg2: #F6F8FA;
+      --rule: #D1D9E0;
       --ink: #1F2328;
-      --text-secondary: #32383F;
       --muted: #59636E;
-      --border: #D1D9E0;
-      --brand: #0969DA;
-      --brand-hover: #0751B3;
-      --brand-active: #053F8C;
-      --brand-soft: #EEF4FB;
-      --brand-soft-strong: #DCEBFA;
-      --brand-text: #0B3E73;
-      --radius-lg: 12px;
-      --radius-pill: 999px;
-      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
-      --space-6: 32px; --space-7: 48px;
+      --text-secondary: #32383F;
+      --text-disabled: #8C959F;
+      --accent: #0969DA;
+      --accent-hover: #0751B3;
+      --accent-active: #053F8C;
+      --accent-soft: #EEF4FB;
+      --accent2: #8250DF;
+
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+      --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 999px;
       --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Courier New', monospace;
+      --font-metric: var(--font-sans);
+      --max: 960px;
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; }
+    html { font-size: 16px; scroll-behavior: smooth; }
     body {
       font-family: var(--font-sans);
       color: var(--ink);
       background: var(--bg);
       line-height: 1.7;
-      padding: 2rem 0;
+      padding: 0;              /* 覆盖各期 body 的 2rem 上下内边距 */
       font-size: 15px;
     }
-    .page { width: calc(100% - 2rem); max-width: 860px; margin: 0 auto; }
+    article.page { width: 100%; }
+    .page__content, .report-intro__surface {
+      width: calc(100% - 1rem);
+      max-width: var(--max);
+      margin: 0 auto;
+    }
 
-    .hero {
+    /* === Intro === */
+    .report-intro { margin-bottom: var(--space-7); }
+    .report-intro__surface {
       position: relative;
       isolation: isolate;
       overflow: hidden;
-      color: var(--brand-text);
-      background: var(--brand-soft);
+      color: var(--page-brand-text);
+      background: var(--page-brand-soft);
       border-radius: var(--radius-lg);
       padding: var(--space-7);
-      margin-bottom: var(--space-7);
     }
-    .hero::before {
+    .report-intro__content { position: relative; z-index: 1; max-width: 780px; }
+    .report-intro__surface::before,
+    .report-intro__surface::after {
       content: "";
       position: absolute;
       z-index: 0;
-      width: 190px; height: 190px;
-      top: -76px; right: -52px;
+      pointer-events: none;
+    }
+    .report-intro__surface::before {
+      width: 190px; height: 190px; top: -76px; right: -52px;
       border-radius: 50%;
-      background: var(--brand-soft-strong);
+      background: var(--page-brand-soft-strong);
       opacity: 0.8;
     }
-    .hero-content { position: relative; z-index: 1; }
-    .hero h1 { font-size: 2rem; line-height: 1.25; }
-    .hero .meta {
+    .report-intro__surface::after {
+      width: 140px; height: 100px; right: 100px; bottom: -38px;
+      border-radius: var(--radius-lg);
+      background: var(--page-surface);
+      opacity: 0.6;
+      transform: rotate(-8deg);
+    }
+    .report-intro h1 { font-size: 2rem; line-height: 1.25; letter-spacing: 0.01em; }
+    .report-intro__meta {
       margin-top: var(--space-3);
       font-size: 13px;
-      color: var(--muted);
+      color: var(--page-text-muted);
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-2) var(--space-4);
     }
-    .hero p.lead {
+    .report-intro__meta strong { color: var(--page-text-secondary); font-weight: 600; }
+    .report-intro__summary {
       max-width: 72ch;
       margin-top: var(--space-4);
-      color: var(--text-secondary);
+      color: var(--page-text-secondary);
       font-size: 15px;
     }
+    .report-intro__highlights {
+      margin-top: var(--space-5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .highlight-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--page-border);
+      border-radius: var(--radius-pill);
+      background: var(--page-bg);
+      color: var(--page-text-secondary);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .highlight-chip::before {
+      content: "";
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--page-brand);
+      flex: none;
+    }
 
+    /* === Sections === */
+    main > section, footer.sources-wrap { margin-bottom: var(--space-7); }
     h2 {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
+      line-height: 1.4;
       color: var(--ink);
       padding-bottom: var(--space-2);
-      margin: var(--space-6) 0 var(--space-4);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .latest {
-      display: block;
-      padding: var(--space-5);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      background: var(--surface);
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .latest:hover { border-color: var(--brand); box-shadow: 0 2px 12px rgba(9, 105, 218, 0.12); }
-    .latest .badge {
-      display: inline-block;
-      padding: 2px var(--space-3);
-      border-radius: var(--radius-pill);
-      background: var(--brand);
-      color: #fff;
-      font-size: 12px;
-      margin-bottom: var(--space-2);
-    }
-    .latest h3 { font-size: 1.15rem; color: var(--brand-active); margin-bottom: var(--space-1); }
-    .latest .date { font-size: 13px; color: var(--muted); margin-bottom: var(--space-2); }
-    .latest p { font-size: 14px; color: var(--text-secondary); margin: 0; }
-    .latest .arrow { color: var(--brand); font-weight: 600; }
-
-    .archive-list { list-style: none; }
-    .archive-list li {
+      margin-bottom: var(--space-4);
+      border-bottom: 1px solid var(--rule);
       display: flex;
       align-items: baseline;
       gap: var(--space-3);
-      padding: var(--space-3) 0;
-      border-bottom: 1px solid var(--border);
     }
-    .archive-list li:last-child { border-bottom: none; }
-    .archive-list .date { flex: none; width: 88px; font-family: monospace; font-size: 13px; color: var(--muted); }
-    .archive-list a { color: var(--brand); text-decoration: none; font-size: 14px; }
-    .archive-list a:hover { text-decoration: underline; }
-    .archive-list .tag-new { color: var(--brand-active); font-size: 12px; background: var(--brand-soft); border-radius: var(--radius-pill); padding: 0 var(--space-2); }
+    h2 .sec-no {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    h3 { font-size: 1.02rem; color: var(--text-secondary); margin: var(--space-5) 0 var(--space-2); }
+    p { margin-bottom: var(--space-3); }
+    .lead-note { color: var(--muted); font-size: 14px; }
 
-    .howto { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-5); }
-    .howto dl { display: grid; grid-template-columns: 88px 1fr; row-gap: var(--space-2); column-gap: var(--space-3); }
-    .howto dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
-    .howto dd { margin: 0; font-size: 14px; }
+    /* === Tags === */
+    .tag {
+      display: inline-block;
+      padding: 1px var(--space-2);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      line-height: 1.6;
+      vertical-align: 0.08em;
+      white-space: nowrap;
+    }
+    .tag--fact { background: var(--page-surface-muted); color: var(--text-secondary); }
+    .tag--judge { background: var(--accent-soft); color: var(--page-brand-active); }
+    .tag--bg { background: var(--page-surface); color: var(--muted); }
 
-    footer { margin-top: var(--space-7); padding-top: var(--space-4); border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+    /* === Fact rows === */
+    .fact-list { border-top: 1px solid var(--rule); }
+    .fact-item { padding: var(--space-4) 0; border-bottom: 1px solid var(--rule); }
+    .fact-item .fact-text { margin-bottom: 0; }
+    .fact-item + .fact-item { padding-top: var(--space-4); }
 
+    /* === Judgment block === */
+    .judge {
+      margin: var(--space-4) 0 var(--space-3);
+      padding: var(--space-4);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-lg);
+      background: var(--page-surface);
+    }
+    .judge .judge-title {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-weight: 600; color: var(--page-brand-active);
+      margin-bottom: var(--space-2); font-size: 14px;
+    }
+    .judge .judge-title::before {
+      content: ""; width: 8px; height: 8px;
+      border-radius: 2px; background: var(--accent); flex: none;
+    }
+    .judge p { margin-bottom: 0; }
+
+    /* === Recommendation blocks === */
+    .rec {
+      padding: var(--space-4);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-lg);
+      background: var(--page-bg);
+      margin-bottom: var(--space-4);
+    }
+    .rec:last-child { margin-bottom: 0; }
+    .rec h4 {
+      font-size: 15px; color: var(--ink);
+      margin-bottom: var(--space-3);
+      display: flex; gap: var(--space-2); align-items: baseline;
+    }
+    .rec h4 .rec-no { font-family: var(--font-mono); color: var(--accent); font-size: 13px; }
+    .rec dl { display: grid; grid-template-columns: 64px 1fr; row-gap: var(--space-2); column-gap: var(--space-3); }
+    .rec dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+    .rec dd { margin: 0; font-size: 14px; }
+
+    /* === Callout === */
+    .callout {
+      margin: var(--space-5) 0 0;
+      padding: var(--space-4);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-lg);
+      background: var(--page-bg);
+    }
+    .callout .callout-title { font-size: 13px; font-weight: 600; color: #BC4C00; margin-bottom: var(--space-1); }
+    .callout p { margin-bottom: 0; font-size: 14px; }
+
+    /* === Table === */
+    .table-wrap { width: 100%; overflow: visible; margin: var(--space-3) 0; }
+    .table-caption { font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-2); }
+    table { width: 100%; border-collapse: collapse; table-layout: auto; }
+    th, td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--rule);
+      text-align: left; vertical-align: top;
+      overflow-wrap: anywhere; font-size: 14px;
+    }
+    thead th { background: var(--page-surface-muted); color: var(--text-secondary); font-weight: 600; }
+    th[scope="row"] { color: var(--text-secondary); font-weight: 600; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-metric); }
+    .table-takeaway { font-size: 14px; color: var(--text-secondary); margin-top: var(--space-2); }
+
+    /* === Colophon === */
+    .colophon { border-top: 1px solid var(--rule); padding-top: var(--space-4); }
+    .colophon dl { display: grid; grid-template-columns: 96px 1fr; row-gap: var(--space-2); column-gap: var(--space-3); }
+    .colophon dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+    .colophon dd { margin: 0; font-size: 14px; }
+
+    /* === Sources === */
+    .sources-wrap { border-top: 1px solid var(--rule); padding-top: var(--space-4); }
+    .sources-wrap h2 { border-bottom: none; margin-bottom: var(--space-3); }
+    .sources { font-size: 13px; color: var(--muted); }
+    .sources ol { margin: 0; padding-left: var(--space-5); }
+    .sources li { margin-bottom: var(--space-1); overflow-wrap: anywhere; }
+    .sources a { color: var(--accent); text-decoration: none; overflow-wrap: anywhere; }
+    .sources a:hover { text-decoration: underline; }
+
+    sup { line-height: 0; }
+    sup a { color: var(--accent); text-decoration: none; font-size: 0.78em; }
+
+    /* === 报告区响应式（窄屏） === */
     @media (max-width: 768px) {
-      .hero { padding: var(--space-5); }
-      .hero h1 { font-size: 1.5rem; }
-      .howto dl { grid-template-columns: 1fr; row-gap: var(--space-1); }
-      .archive-list li { flex-direction: column; gap: var(--space-1); }
+      font-size: 14px;
+      .report-intro__surface { padding: var(--space-5); }
+      .report-intro__surface::before { width: 124px; height: 124px; top: -44px; right: -52px; opacity: 0.4; }
+      .report-intro__surface::after { display: none; }
+      .report-intro h1 { font-size: 1.5rem; }
+      .rec dl, .colophon dl { grid-template-columns: 1fr; row-gap: var(--space-1); }
+      .rec dt, .colophon dt { padding-top: 0; }
+    }
+
+    /* ============================================================
+       三栏布局应用样式（1 : 3 : 1）
+       ============================================================ */
+    :root {
+      --app-max: 1360px;
+      --app-pad: 20px;
+      --app-gap: 20px;
+    }
+    .app-header {
+      border-bottom: 1px solid var(--page-border);
+      background: var(--page-bg);
+    }
+    .app-header__inner {
+      max-width: var(--app-max);
+      margin: 0 auto;
+      padding: var(--space-5) var(--app-pad);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-3) var(--space-5);
+    }
+    .app-header h1 {
+      font-size: 1.35rem;
+      color: var(--page-brand-active);
+      letter-spacing: 0.01em;
+    }
+    .app-header .lead {
+      color: var(--page-text-muted);
+      font-size: 13.5px;
+      max-width: 70ch;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 1fr 3fr 1fr;   /* 左:中:右 = 1:3:1 */
+      gap: var(--app-gap);
+      max-width: var(--app-max);
+      margin: 0 auto;
+      padding: var(--space-5) var(--app-pad) var(--space-7);
+      align-items: start;
+    }
+
+    /* 左右两栏：粘性 + 自身滚动 */
+    .col-left, .col-right {
+      position: sticky;
+      top: var(--space-4);
+      align-self: start;
+      max-height: calc(100vh - 2 * var(--space-4));
+      overflow: auto;
+      overscroll-behavior: contain;
+    }
+    .col-left h2, .col-right h2 {
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--page-border);
+      padding-bottom: var(--space-2);
+      margin: 0 0 var(--space-3);
+      color: var(--page-text-secondary);
+      display: block;
+    }
+
+    /* === 左侧：历史期数列表 === */
+    .issue-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .issue-list li { margin: 0; }
+    .issue-list a {
+      display: block;
+      padding: var(--space-3);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: var(--page-text-secondary);
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .issue-list a:hover { background: var(--page-brand-soft); color: var(--page-brand-active); }
+    .issue-list li.active a {
+      border-color: var(--page-brand-soft-strong);
+      background: var(--page-brand-soft);
+      color: var(--page-brand-active);
+    }
+    .issue-list .il-date {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--page-text-muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .issue-list li.active .il-date { color: var(--page-brand); }
+    .issue-list .il-title { font-size: 14px; font-weight: 600; line-height: 1.4; }
+    .issue-list .il-sub { font-size: 12px; color: var(--page-text-muted); margin-top: 2px; }
+    .issue-list .il-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 0 var(--space-2);
+      border-radius: var(--radius-pill);
+      background: var(--page-brand);
+      color: #fff;
+      margin-left: var(--space-2);
+      vertical-align: 0.1em;
+    }
+
+    /* === 中间栏：正文宿主 === */
+    .col-main { min-width: 0; }
+    .main-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      font-size: 13px;
+      color: var(--page-text-muted);
+    }
+    .main-toolbar__nav { display: flex; gap: var(--space-2); }
+    .tb-btn {
+      border: 1px solid var(--page-border);
+      border-radius: var(--radius-pill);
+      background: var(--page-bg);
+      padding: var(--space-1) var(--space-3);
+      font-size: 13px;
+      color: var(--page-text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .tb-btn:hover:not(:disabled) { border-color: var(--page-brand); background: var(--page-brand-soft); color: var(--page-brand-active); }
+    .tb-btn:disabled { color: var(--page-text-disabled); border-style: dashed; cursor: default; }
+
+    .report-host { animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+    .state {
+      padding: var(--space-7) var(--space-5);
+      text-align: center;
+      color: var(--page-text-muted);
+      border: 1px dashed var(--page-border);
+      border-radius: var(--radius-lg);
+      background: var(--page-surface);
+    }
+    .state--error { color: #CF222E; border-color: #FFD4D2; background: #FFF5F5; }
+
+    .app-footer {
+      max-width: var(--app-max);
+      margin: 0 auto;
+      padding: var(--space-4) var(--app-pad) var(--space-6);
+      border-top: 1px solid var(--page-border);
+      font-size: 12.5px;
+      color: var(--page-text-muted);
+    }
+
+    /* === 右侧：大纲 TOC === */
+    .toc { list-style: none; }
+    .toc li { margin: 0; }
+    .toc a {
+      display: block;
+      padding: var(--space-2) var(--space-3);
+      border-left: 2px solid var(--page-border);
+      color: var(--page-text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.45;
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .toc a:hover { color: var(--page-brand-active); background: var(--page-brand-soft); }
+    .toc li.active a {
+      border-left-color: var(--page-brand);
+      color: var(--page-brand-active);
+      background: var(--page-brand-soft);
+      font-weight: 600;
+    }
+    .toc .toc-no {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--page-brand);
+      margin-right: var(--space-2);
+    }
+    .toc-empty { font-size: 13px; color: var(--page-text-disabled); padding: var(--space-3); }
+
+    /* === 响应式：窄屏堆叠 === */
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+      .col-left, .col-right {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
+      /* 左侧历史列表：横向滚动条 */
+      .col-left .issue-list {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: var(--space-2);
+      }
+      .col-left .issue-list li { flex: 0 0 auto; min-width: 200px; }
+      /* 右侧大纲：折叠 */
+      .col-right details { border: 1px solid var(--page-border); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); background: var(--page-surface); }
+      .col-right details > summary { cursor: pointer; font-weight: 600; color: var(--page-text-secondary); font-size: 14px; list-style: none; }
+      .col-right details > summary::-webkit-details-marker { display: none; }
+      .col-right details[open] > summary { margin-bottom: var(--space-2); }
+      .col-right .toc { margin-top: var(--space-2); }
+    }
+    @media (max-width: 980px) {
+      .col-right > h2 { display: none; }
+    }
+
+    @media print {
+      .col-left, .col-right, .main-toolbar { display: none; }
+      .app { display: block; }
+      .report-host { animation: none; }
+      a { color: inherit; text-decoration: none; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="hero">
-      <div class="hero-content">
-        <h1>海外仓市场资讯简报</h1>
-        <div class="meta">
-          <span>更新频率：每周一期</span>
-          <span>读者：管理层 + 销售/运营一线</span>
-          <span>流程：自动生成草稿 → 人工审核 → 发布</span>
+  <header class="app-header">
+    <div class="app-header__inner">
+      <h1>海外仓市场资讯简报</h1>
+      <p class="lead">围绕公司海外仓业务的周刊：目标客户动态、海外仓同行动作、政策与运价数据。每期回答三个问题——发生了什么、对我们意味着什么、建议做什么。</p>
+    </div>
+  </header>
+
+  <div class="app">
+    <!-- 左侧：历史资讯记录 -->
+    <aside class="col-left" aria-label="历史期数">
+      <h2>历史资讯</h2>
+      <ul class="issue-list" id="issueList"><!-- JS 注入 --></ul>
+    </aside>
+
+    <!-- 中间：选中期的正文 -->
+    <main class="col-main">
+      <div class="main-toolbar">
+        <span class="main-toolbar__cur" id="curLabel">—</span>
+        <div class="main-toolbar__nav">
+          <button class="tb-btn" id="prevBtn" type="button" rel="prev">← 上一期</button>
+          <button class="tb-btn" id="nextBtn" type="button" rel="next">下一期 →</button>
         </div>
-        <p class="lead">围绕公司海外仓业务的每周市场资讯：目标客户（跨境卖家）动态、海外仓同行动作、政策与运价数据。每期回答三个问题——这周市场发生了什么、对我们意味着什么、建议做什么。所有【事实】均附来源与日期，【判断】为小组分析。</p>
       </div>
-    </header>
+      <div class="report-host" id="reportHost">
+        <div class="state" id="stateBox">正在加载最新一期…</div>
+      </div>
+    </main>
 
-    <section>
-      <h2>最新一期</h2>
-      <a class="latest" href="issues/issue-2026-41.html">
-        <span class="badge">最新</span>
-        <h3>2026年第41期</h3>
-        <div class="date">发布日期：2026-10-09</div>
-        <p>本期看点：亚马逊黑五FBA入库截止精确化（优化拆分10/28）；亚洲港口拥堵滞留约300万TEU运力；NRF上调10月进口至225万TEU（+8.5%）；欧盟小额申报费11月起3→5欧元/票。 <span class="arrow">→ 查看本期</span></p>
-      </a>
-    </section>
-
-    <section>
-      <h2>历史归档</h2>
-      <ul class="archive-list">
-        <li><span class="date">2026-10-09</span><a href="issues/issue-2026-41.html">2026年第41期（最新）</a></li>
-        <li><span class="date">2026-09-29</span><a href="issues/issue-2026-W40.html">2026年第40期</a></li>
-        <li><span class="date">2026-09-24</span><a href="issues/issue-2026-W39.html">2026年第39期</a></li>
-      </ul>
-    </section>
-
-    <section class="howto">
-      <h2>关于本简报</h2>
-      <dl>
-        <dt>给谁看</dt>
-        <dd>公司管理层（方向判断参考）+ 海外仓业务销售/运营一线（报价与获客参考），分层阅读：看每期顶部摘要与判断即可。</dd>
-        <dt>关注什么</dt>
-        <dd>目标客户（跨境卖家）动态 + 海外仓同行动作 + 政策速览 + 运价与港口数据面板。</dd>
-        <dt>希望读者做什么</dt>
-        <dd>每周 2-3 分钟看懂"市场发生了什么、对我们意味着什么、建议做什么"，支撑报价调整、客户跟进和风险预判。</dd>
-        <dt>审核与更新</dt>
-        <dd>每周一自动生成草稿，人工审核事实、来源与措辞后发布；本页面每周更新最新一期并归档历史。</dd>
-      </dl>
-    </section>
-
-    <footer>海外仓简报小组制作 · 正文区分【事实】与【判断】 · 分析观点不代表公司立场</footer>
+    <!-- 右侧：正文小标题大纲 -->
+    <aside class="col-right" aria-label="本期目录">
+      <h2>本期目录</h2>
+      <ul class="toc" id="toc"><li class="toc-empty">加载正文后显示</li></ul>
+    </aside>
   </div>
+
+  <footer class="app-footer">海外仓简报小组制作 · 正文区分【事实】与【判断】 · 分析观点不代表公司立场 · 每周一自动生成草稿、人工审核后发布</footer>
+
+  <script>
+    // === 期数数据（按时间正序：旧 → 新）===
+    const ISSUES = [
+      { id: '39', file: 'issues/issue-2026-W39.html', title: '2026年第39期', sub: '试看版 · V1', date: '2026-09-24' },
+      { id: '40', file: 'issues/issue-2026-W40.html', title: '2026年第40期', sub: '每周试运行 · 第2期', date: '2026-09-29' },
+      { id: '41', file: 'issues/issue-2026-41.html',  title: '2026年第41期', sub: '每周试运行 · 第3期', date: '2026-10-09' },
+    ];
+    const NEWEST_ID = ISSUES[ISSUES.length - 1].id;
+
+    const $list = document.getElementById('issueList');
+    const $host = document.getElementById('reportHost');
+    const $toc  = document.getElementById('toc');
+    const $state = document.getElementById('stateBox');
+    const $curLabel = document.getElementById('curLabel');
+    const $prevBtn = document.getElementById('prevBtn');
+    const $nextBtn = document.getElementById('nextBtn');
+
+    let currentId = null;
+    let spy = null;
+
+    // === 渲染左侧历史列表（最新在前）===
+    function renderList() {
+      const html = [...ISSUES].reverse().map(it => {
+        const isNewest = it.id === NEWEST_ID;
+        return `<li data-id="${it.id}">
+          <a href="#issue-${it.id}">
+            <span class="il-date">${it.date}</span>
+            <span class="il-title">${it.title}${isNewest ? '<span class="il-badge">最新</span>' : ''}</span>
+            <span class="il-sub">${it.sub}</span>
+          </a>
+        </li>`;
+      }).join('');
+      $list.innerHTML = html;
+    }
+
+    function setActiveList(id) {
+      [...$list.children].forEach(li => {
+        li.classList.toggle('active', li.dataset.id === id);
+      });
+    }
+
+    function setToolbar(id) {
+      const idx = ISSUES.findIndex(i => i.id === id);
+      const it = ISSUES[idx];
+      $curLabel.textContent = it ? `${it.title}（${it.date}）` : '—';
+      $prevBtn.disabled = idx <= 0;
+      $nextBtn.disabled = idx >= ISSUES.length - 1;
+      $prevBtn.textContent = idx > 0 ? `← 上一期（${ISSUES[idx-1].title}）` : '← 已是最早';
+      $nextBtn.textContent = idx < ISSUES.length - 1 ? `下一期（${ISSUES[idx+1].title}）→` : '已是最新 →';
+    }
+
+    // === 从期 HTML 文档中提取 <article class="page"> ===
+    function extractArticle(doc) {
+      return doc.querySelector('article.page');
+    }
+
+    // === 根据正文 section 生成右侧大纲 ===
+    function buildToc(articleEl) {
+      const targets = [];
+      articleEl.querySelectorAll('main > section[id]').forEach(sec => {
+        const h2 = sec.querySelector('h2');
+        if (!h2) return;
+        const no = h2.querySelector('.sec-no');
+        targets.push({
+          id: sec.id,
+          no: no ? no.textContent.trim() : '',
+          text: h2.textContent.replace(no ? no.textContent : '', '').trim(),
+        });
+      });
+      // 来源（sources-wrap），无 id 则补一个
+      const sources = articleEl.querySelector('footer.sources-wrap');
+      if (sources) {
+        if (!sources.id) sources.id = 'sources';
+        const h2 = sources.querySelector('h2');
+        targets.push({ id: sources.id, no: '附', text: h2 ? h2.textContent.trim() : '来源' });
+      }
+
+      if (!targets.length) {
+        $toc.innerHTML = '<li class="toc-empty">未找到章节</li>';
+        return [];
+      }
+      $toc.innerHTML = targets.map(t =>
+        `<li><a href="#${t.id}"><span class="toc-no">${t.no}</span>${t.text}</a></li>`
+      ).join('');
+      return targets;
+    }
+
+    // === 滚动监听：高亮当前章节 ===
+    function setupScrollSpy(articleEl) {
+      if (spy) spy.disconnect();
+      const sections = [...articleEl.querySelectorAll('main > section[id], footer.sources-wrap[id]')];
+      if (!sections.length) return;
+      const links = new Map();
+      $toc.querySelectorAll('a').forEach(a => {
+        const id = a.getAttribute('href').slice(1);
+        links.set(id, a.closest('li'));
+      });
+      spy = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const li = links.get(e.target.id);
+            if (li) {
+              $toc.querySelectorAll('li').forEach(x => x.classList.remove('active'));
+              li.classList.add('active');
+            }
+          }
+        });
+      }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+      sections.forEach(s => spy.observe(s));
+    }
+
+    // === 大纲点击：平滑滚动到对应章节（不修改 hash，避免与期数路由冲突）===
+    $toc.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function showState(msg, isError) {
+      $host.innerHTML = '';
+      const box = document.createElement('div');
+      box.className = 'state' + (isError ? ' state--error' : '');
+      box.textContent = msg;
+      $host.appendChild(box);
+    }
+
+    // === 加载并渲染某一期 ===
+    async function loadIssue(id, { scroll = true } = {}) {
+      const it = ISSUES.find(i => i.id === id);
+      if (!it) { showState('未找到该期：' + id, true); return; }
+      if (currentId === id && $host.dataset.loaded === '1') return;
+      currentId = id;
+      setActiveList(id);
+      setToolbar(id);
+      showState('正在加载 ' + it.title + ' …');
+      try {
+        const res = await fetch(it.file, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const article = extractArticle(doc);
+        if (!article) throw new Error('未找到正文 <article class="page">');
+        $host.innerHTML = '';
+        $host.appendChild(article);
+        $host.dataset.loaded = '1';
+        buildToc(article);
+        setupScrollSpy(article);
+        if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        $host.dataset.loaded = '0';
+        showState('加载失败：' + err.message + '（可直接打开 ' + it.file + ' 查看）', true);
+      }
+    }
+
+    // === 上一期 / 下一期 ===
+    function shiftIssue(delta) {
+      const idx = ISSUES.findIndex(i => i.id === currentId);
+      const next = ISSUES[idx + delta];
+      if (next) location.hash = 'issue-' + next.id;
+    }
+    $prevBtn.addEventListener('click', () => shiftIssue(-1));
+    $nextBtn.addEventListener('click', () => shiftIssue(1));
+
+    // === 哈希路由：#issue-41 ===
+    function parseHash() {
+      const m = /^#issue-(.+)$/.exec(location.hash);
+      return m ? m[1] : null;
+    }
+    function routeFromHash() {
+      const id = parseHash();
+      const target = id && ISSUES.find(i => i.id === id) ? id : NEWEST_ID;
+      loadIssue(target);
+    }
+    window.addEventListener('hashchange', routeFromHash);
+
+    // === 启动 ===
+    renderList();
+    routeFromHash();
+  </script>
 </body>
 </html>
