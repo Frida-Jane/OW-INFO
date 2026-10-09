@@ -350,9 +350,68 @@
       body { padding: 0; }
       a { color: inherit; text-decoration: none; }
     }
+    /* === Issue navigation === */
+    .issue-nav {
+      display: flex;
+      align-items: stretch;
+      gap: var(--space-3);
+      width: calc(100% - 2rem);
+      max-width: var(--max);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .issue-nav--top { margin-bottom: var(--space-5); }
+    .issue-nav--bottom { margin-top: var(--space-7); margin-bottom: var(--space-4); }
+    .issue-nav__link,
+    .issue-nav__placeholder {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--page-border);
+      border-radius: var(--radius-md);
+      background: var(--page-surface);
+      text-decoration: none;
+    }
+    .issue-nav__link { color: var(--page-text-secondary); transition: border-color .15s, background .15s, color .15s; }
+    .issue-nav__link:hover { border-color: var(--page-brand); background: var(--page-brand-soft); color: var(--page-brand-active); }
+    .issue-nav__placeholder { color: var(--page-text-disabled); border-style: dashed; }
+    .issue-nav__dir { font-size: 13px; color: var(--page-brand); font-weight: 600; }
+    .issue-nav__title { font-size: 14px; }
+    .issue-nav__link--prev, .issue-nav__placeholder--prev { text-align: left; align-items: flex-start; }
+    .issue-nav__link--next, .issue-nav__placeholder--next { text-align: right; align-items: flex-end; }
+    .issue-nav__home {
+      flex: 0 0 auto;
+      align-self: center;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid var(--page-border);
+      border-radius: var(--radius-pill);
+      background: var(--page-bg);
+      text-decoration: none;
+      color: var(--page-text-secondary);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .issue-nav__home:hover { border-color: var(--page-brand); color: var(--page-brand-active); }
+    @media (max-width: 768px) {
+      .issue-nav { flex-direction: column; gap: var(--space-2); }
+      .issue-nav__link--next, .issue-nav__placeholder--next { text-align: left; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
+  <nav class="issue-nav issue-nav--top" aria-label="期数导航">
+    <a class="issue-nav__link issue-nav__link--prev" href="issue-2026-W40.html" rel="prev">
+      <span class="issue-nav__dir">← 上一期</span>
+      <span class="issue-nav__title">2026年第40期</span>
+    </a>
+    <a class="issue-nav__home" href="../index.html">返回首页</a>
+    <a class="issue-nav__link issue-nav__link--next" href="issue-2026-41-updated.html" rel="next">
+      <span class="issue-nav__dir">下一期 →</span>
+      <span class="issue-nav__title">2026年第41期（更新版）</span>
+    </a>
+  </nav>
   <article class="page">
     <header class="report-intro">
       <div class="report-intro__surface">
@@ -607,5 +666,16 @@
       </footer>
     </div>
   </article>
+  <nav class="issue-nav issue-nav--bottom" aria-label="期数导航">
+    <a class="issue-nav__link issue-nav__link--prev" href="issue-2026-W40.html" rel="prev">
+      <span class="issue-nav__dir">← 上一期</span>
+      <span class="issue-nav__title">2026年第40期</span>
+    </a>
+    <a class="issue-nav__home" href="../index.html">返回首页</a>
+    <a class="issue-nav__link issue-nav__link--next" href="issue-2026-41-updated.html" rel="next">
+      <span class="issue-nav__dir">下一期 →</span>
+      <span class="issue-nav__title">2026年第41期（更新版）</span>
+    </a>
+  </nav>
 </body>
 </html>
