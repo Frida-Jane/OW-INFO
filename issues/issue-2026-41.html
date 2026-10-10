@@ -335,6 +335,53 @@
     sup { line-height: 0; }
     sup a { color: var(--accent); text-decoration: none; font-size: 0.78em; }
 
+    /* === Figure / 配图 / 视频嵌入 === */
+    figure {
+      margin: var(--space-5) 0;
+      border: 1px solid var(--page-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--page-surface);
+    }
+    figure > img,
+    figure > video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    figure figcaption {
+      padding: var(--space-3) var(--space-4);
+      font-size: 13px;
+      color: var(--page-text-muted);
+      line-height: 1.6;
+      border-top: 1px solid var(--page-border);
+      background: var(--page-bg);
+    }
+    figure figcaption strong { color: var(--page-text-secondary); font-weight: 600; }
+    .fig-label {
+      display: inline-block;
+      padding: 1px var(--space-2);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--page-brand-soft);
+      color: var(--page-brand-active);
+      margin-right: var(--space-2);
+      vertical-align: 0.08em;
+    }
+    .video-frame {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #000;
+    }
+    .video-frame iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+
     /* === Responsive === */
     @media (max-width: 768px) {
       body { padding: 1rem 0; font-size: 14px; }
@@ -453,6 +500,11 @@
             </dl>
           </div>
 
+          <figure>
+            <img src="../images/fba-deadline-timeline.jpg" alt="亚马逊黑五/网一FBA入库截止时间线：AWD 10/14、单点入仓 10/21、优化拆分 10/28" loading="lazy">
+            <figcaption><span class="fig-label">示意图</span><strong>亚马逊黑五/网一 FBA 入库截止时间线</strong>——三个关键截止日依次为 AWD 货件 10/14、单点入仓 10/21、优化拆分 10/28，距本期发布约 19 天窗口。</figcaption>
+          </figure>
+
           <div class="rec">
             <h4><span class="rec-no">02</span>业务信号：欧盟合规成本再升级，欧洲本土仓需求确定性上升</h4>
             <dl>
@@ -498,6 +550,11 @@
               <p class="fact-text"><span class="tag tag--fact">事实</span>　NRF港口追踪（10月8日更新）：美国9月港口进口预测下调至228万TEU（同比+8.2%），10月上调至225万TEU（+8.5%），11月200万TEU（-1%）、12月202万TEU（+0.6%），旺季延长至四季度<sup><a href="#cite-19">[19]</a></sup><sup><a href="#cite-20">[20]</a></sup>。</p>
             </div>
           </div>
+
+          <figure>
+            <img src="../images/port-congestion-map.jpg" alt="亚洲港口拥堵示意图：上海、宁波主要港口拥堵，全球约300万TEU运力滞留" loading="lazy">
+            <figcaption><span class="fig-label">示意图</span><strong>亚洲港口拥堵与运力滞留</strong>——上海、宁波主要港口拥堵导致全球约 300 万 TEU 运力滞留，美西、欧洲航线延迟，预计恢复需 7-10 个月。</figcaption>
+          </figure>
 
           <div class="judge">
             <div class="judge-title">我们的判断</div>
