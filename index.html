@@ -246,6 +246,23 @@
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-metric); }
     .table-takeaway { font-size: 14px; color: var(--text-secondary); margin-top: var(--space-2); }
 
+    /* === 编号分行列表（1. 2. 3.） === */
+    .pt-list { margin: var(--space-1) 0 0 1.4em; }
+    .pt-list li { margin-bottom: var(--space-1); font-size: 14px; }
+    .pt-list li:last-child { margin-bottom: 0; }
+
+    /* === 资讯卡片：每行2条，移动端1条 === */
+    .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: var(--space-3) 0 var(--space-4); }
+    .info-card { border: 1px solid var(--rule); border-radius: var(--radius-lg); padding: var(--space-4); background: var(--page-bg); display: flex; flex-direction: column; gap: var(--space-2); }
+    .info-card h4 { font-size: 14.5px; color: var(--ink); margin: 0; display: flex; gap: var(--space-2); align-items: baseline; flex-wrap: wrap; }
+    .info-card h4 .plat { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 600; flex: none; }
+    .info-card p { font-size: 13.5px; color: var(--text-secondary); margin: 0; }
+    .info-card p + p { margin-top: var(--space-1); }
+    .info-card .src { margin-top: auto; padding-top: var(--space-2); border-top: 1px dashed var(--page-surface-muted); font-size: 12.5px; color: var(--muted); }
+    .info-card .src a { color: var(--accent); text-decoration: none; }
+    .info-card .src a:hover { text-decoration: underline; }
+    @media (max-width: 980px) { .card-grid { grid-template-columns: 1fr; } }
+
     /* === Colophon === */
     .colophon { border-top: 1px solid var(--rule); padding-top: var(--space-4); }
     .colophon dl { display: grid; grid-template-columns: 96px 1fr; row-gap: var(--space-2); column-gap: var(--space-3); }
@@ -575,11 +592,7 @@
   <script>
     // === 期数数据（按时间正序：旧 → 新）===
     const ISSUES = [
-      { id: '39', file: 'issues/issue-2026-W39.html', title: '2026年第39期', sub: '试看版 · V1', date: '2026-09-24' },
-      { id: '40', file: 'issues/issue-2026-W40.html', title: '2026年第40期', sub: '每周试运行 · 第2期', date: '2026-09-29' },
-      { id: '41', file: 'issues/issue-2026-41.html',  title: '2026年第41期', sub: '每周试运行 · 第3期', date: '2026-10-09' },
-      { id: '42', file: 'issues/issue-2026-42.html',  title: '旺季费用上行：EFS·FBA·附加费', sub: '2026年第42期 · 每周试运行', date: '2026-10-10' },
-      { id: '43', file: 'issues/issue-2026-43.html',  title: '欧盟€2处理费·平台新规·黑五备货', sub: '2026年第43期 · 每周试运行', date: '2026-10-13' },
+      { id: '01', file: 'issues/issue-2026-01.html', title: '创刊号：欧盟€2处理费·旺季节点·品类雷达', sub: '2026年第1期 · 每周试运行 · 创刊号', date: '2026-10-13' },
     ];
     const NEWEST_ID = ISSUES[ISSUES.length - 1].id;
 
