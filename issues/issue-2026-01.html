@@ -133,22 +133,27 @@
       h2 .hint-pop { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); display: none; width: min(600px, 86vw); padding: 12px 16px; background: #fff; border: 1px solid var(--page-border); border-radius: 10px; box-shadow: 0 8px 28px rgba(31,35,40,.14); font-size: 12.5px; font-weight: 400; line-height: 1.9; color: var(--text-secondary); text-align: left; z-index: 40; }
       h2 .hint-pop b { color: var(--ink); }
       h2 .hint:hover .hint-pop, h2 .hint:focus .hint-pop { display: block; }
+
+      /* === 移动端适配（≤640px） === */
+      @media (max-width: 640px) {
+        .report-intro__surface { padding: var(--space-5) var(--space-4); }
+        .pt-list { margin-left: 1.2em; }
+        .pt-list li { font-size: 13.5px; }
+        .tab-bar label { padding: 6px 12px; font-size: 12.5px; }
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-wrap table { min-width: 560px; }
+        th, td { padding: 6px 8px; font-size: 13px; }
+        .rec, .info-card, .judge { padding: var(--space-3); }
+        .rec dl { grid-template-columns: 1fr; }
+        .rec dt { padding-top: 0; }
+        .hint-pop { width: 92vw; }
+        figure { margin: var(--space-3) 0; }
+      }
     </style>
     <header class="report-intro">
       <div class="report-intro__surface">
         <div class="report-intro__content">
-          <h1>海外仓市场资讯简报（2026年第1期 · 创刊号）</h1>
-          <div class="report-intro__meta">
-            <span><strong>期号：</strong>2026年第1期（每周试运行 · 创刊号）</span>
-            <span><strong>发布日期：</strong>2026-10-13</span>
-            <span><strong>数据截止：</strong>2026-10-13</span>
-            <span><strong>下次更新：</strong>2026-10-20（每周一）</span>
-          </div>
-          <div class="report-intro__meta">
-            <span><strong>本期制作：</strong>海外仓信息小组</span>
-            <span><strong>审核：</strong>海外仓信息小组</span>
-          </div>
-          <p class="report-intro__summary" style="margin-bottom: var(--space-1);"><strong>本期核心：</strong></p>
+          <p class="report-intro__summary" style="margin-bottom: var(--space-1); text-align: center;"><strong>本期核心：</strong></p>
           <ol class="pt-list" style="font-size: 15px; margin-top: 0;">
             <li><strong>欧盟海关改革临近落地</strong>——€2 联盟处理费 11/1 征收、仓发订单享更低档位，直发模式面临重估。</li>
             <li><strong>Amazon 三节点密集</strong>——10/15 旺季费率、11/2 责任险扩围、11/5 黑五徽标截止。</li>
@@ -156,14 +161,13 @@
             <li><strong>品类美欧分化</strong>——US 家具零售转弱但假日预测仍强、UK 连续 6 个月增长、储能美欧双旺。</li>
             <li><strong>同行加速扩产</strong>——Walmart Stockton 新仓、ShipBob Manchester 扩容 50%、GXO Venlo 自动化加码。</li>
           </ol>
-          <div class="report-intro__meta role-row">
+          <div class="report-intro__meta role-row" style="justify-content: center; margin-top: var(--space-4);">
             <span><strong>按岗位阅读：</strong></span>
             <a class="role-chip" href="#s1">管理层 · 判断与行动</a>
             <a class="role-chip" href="#s2">销售 · 平台与品类</a>
             <a class="role-chip" href="#s3">客服 · 渠道与异常</a>
             <a class="role-chip" href="#s8">供应链 · 费率与节点</a>
           </div>
-          <p class="report-intro__summary" style="margin-top: var(--space-3); font-size: 13px; color: var(--muted);">阅读说明：01 本周必读 · 02-07 专题详情（页签切换）· 08 数据附录；范围：美欧平台、头尾程渠道。标 <span class="pending">待复核</span> = 尚未交叉验证。</p>
         </div>
       </div>
     </header>
