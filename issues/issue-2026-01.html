@@ -95,6 +95,39 @@
 </head>
 <body>
   <article class="page">
+    <style>
+      /* === 本期样式（article 内嵌：独立页与 SPA 注入均生效） === */
+      /* 页签：纯 CSS radio 实现，SPA innerHTML 注入无需 JS */
+      .tabs > input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+      .tab-bar { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: var(--space-1); border-bottom: 2px solid var(--rule); margin-bottom: var(--space-4); }
+      .tab-bar label { flex: none; padding: 7px 16px; font-size: 13.5px; font-weight: 600; color: var(--muted); cursor: pointer; border: 1px solid transparent; border-bottom: none; border-radius: 8px 8px 0 0; position: relative; top: 2px; user-select: none; white-space: nowrap; }
+      .tab-bar label:hover { color: var(--accent); }
+      .tabs > .tab-panel { display: none; }
+      .tabs > input:checked ~ .tab-bar label { background: transparent; }
+      #t02-1:checked ~ .tab-bar label[for="t02-1"], #t02-2:checked ~ .tab-bar label[for="t02-2"],
+      #t03-1:checked ~ .tab-bar label[for="t03-1"], #t03-2:checked ~ .tab-bar label[for="t03-2"], #t03-3:checked ~ .tab-bar label[for="t03-3"],
+      #t04-1:checked ~ .tab-bar label[for="t04-1"], #t04-2:checked ~ .tab-bar label[for="t04-2"],
+      #t08-1:checked ~ .tab-bar label[for="t08-1"], #t08-2:checked ~ .tab-bar label[for="t08-2"], #t08-3:checked ~ .tab-bar label[for="t08-3"] { color: var(--accent); background: var(--page-brand-soft); border-color: var(--rule); }
+      #t02-1:checked ~ .p02a, #t02-2:checked ~ .p02b { display: block; }
+      #t03-1:checked ~ .p03a, #t03-2:checked ~ .p03b, #t03-3:checked ~ .p03c { display: block; }
+      #t04-1:checked ~ .p04a, #t04-2:checked ~ .p04b { display: block; }
+      #t08-1:checked ~ .p08a, #t08-2:checked ~ .p08b, #t08-3:checked ~ .p08c { display: block; }
+
+      /* 固定跟踪池 chips */
+      .pool { margin: 0 0 var(--space-4); font-size: 13px; line-height: 2; }
+      .pool-t { display: inline-block; min-width: 96px; font-weight: 700; color: var(--muted); }
+      .chip { display: inline-block; padding: 1px 10px; margin: 0 4px 4px 0; border: 1px solid var(--page-border); border-radius: 999px; background: var(--page-surface); color: var(--text-secondary); font-size: 12.5px; white-space: nowrap; }
+      .chip--new { border-style: dashed; border-color: var(--accent); color: var(--accent); background: var(--page-bg); }
+      .pool-note { font-size: 12px; color: var(--muted); }
+
+      /* 卡片、表格、章节标题观感 */
+      .info-card { transition: box-shadow .15s ease, border-color .15s ease; }
+      .info-card:hover { border-color: var(--page-brand); box-shadow: 0 2px 12px rgba(9,105,218,.10); }
+      .table-wrap tbody tr:nth-child(even) { background: var(--page-surface); }
+      main > section > h2 .sec-no { display: inline-block; background: var(--accent); color: #fff; padding: 0 8px; border-radius: 6px; font-size: 0.78em; line-height: 1.6; }
+      .main-tag { display: inline-block; padding: 0 8px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; vertical-align: 0.1em; }
+      .empty-note { padding: var(--space-4); border: 1px dashed var(--page-border); border-radius: var(--radius-lg); background: var(--page-surface); color: var(--muted); font-size: 13.5px; }
+    </style>
     <header class="report-intro">
       <div class="report-intro__surface">
         <div class="report-intro__content">
@@ -124,7 +157,7 @@
             <a class="role-chip" href="#s3">客服 · 渠道与异常</a>
             <a class="role-chip" href="#s8">供应链 · 费率与节点</a>
           </div>
-          <p class="report-intro__summary" style="margin-top: var(--space-3); font-size: 13px; color: var(--muted);">阅读说明：01 判断与行动为本周必读，02-07 为专题详情，08 为数据附录。标 <span class="pending">待复核</span> 的信息尚未交叉验证，执行前请先确认官方口径。</p>
+          <p class="report-intro__summary" style="margin-top: var(--space-3); font-size: 13px; color: var(--muted);">阅读说明：01 判断与行动为本周必读，02-07 为专题详情（含页签切换），08 为数据附录。统计范围：平台与监管聚焦美国与欧盟各国，物流渠道覆盖头程与尾程；标 <span class="pending">待复核</span> 的信息尚未交叉验证，执行前请先确认官方口径。</p>
         </div>
       </div>
     </header>
@@ -227,80 +260,129 @@
 
       <!-- ============ 02 平台新规 ============ -->
       <section id="s2">
-        <h2><span class="sec-no">02</span>海外电商平台新规（Amazon · TikTok Shop · eBay · Walmart）</h2>
-        <p class="lead-note">近一周（10/6-10/13）发布或更新的平台政策。</p>
-        <div class="card-grid">
-          <div class="info-card">
-            <h4><span class="plat">Amazon US/UK/DE</span>旺季费率与黑五徽标节点（主条目）</h4>
-            <p>旺季配送费 10/15-2027/1/14 生效（涨幅与去年一致）；黑五周/网一库存须 11/5 前到仓方可保证 Prime 徽标；英国、德国站同步收取 Festive Peak Fee。</p>
-            <p class="src">来源：<a href="https://sellercentral.amazon.com/help/hub/reference/external/G4QH4XCRWUXRJBLY" target="_blank" rel="noopener">Amazon 旺季指南</a> · <span class="pending">待复核</span> <a href="https://sellercentral.amazon.com/seller-forums/discussions/t/aac938f0-0760-4baf-9739-5028985ec70e" target="_blank" rel="noopener">卖家论坛</a></p>
+        <h2><span class="sec-no">02</span>海外电商平台新规（US · EU）</h2>
+        <p class="lead-note">近一周（10/6-10/13）发布或更新的平台政策。统计范围：美国与欧盟各国平台，不含其他亚洲、中东、非洲市场。点击页签切换市场。</p>
+        <div class="pool">
+          <span class="pool-t">US 固定跟踪：</span><span class="chip">Amazon</span><span class="chip">Walmart</span><span class="chip">eBay</span><span class="chip">TikTok Shop</span><span class="chip">Temu</span><span class="chip">SHEIN</span><span class="chip">Wayfair（家具家居）</span><span class="chip">Home Depot / Lowe's</span><span class="chip">Target</span><span class="chip">Best Buy</span><span class="chip">Etsy</span><span class="chip">Newegg</span>
+        </div>
+        <div class="pool">
+          <span class="pool-t">EU 固定跟踪：</span><span class="chip">OTTO（德）</span><span class="chip">Kaufland.de（德/中东欧）</span><span class="chip">Allegro（波兰）</span><span class="chip">ManoMano（法/家居园艺）</span><span class="chip">Bol.com（荷兰）</span><span class="chip">Cdiscount（法）</span><span class="chip">Wayfair Europe</span><span class="chip">Zalando</span><span class="chip">eMAG（罗马尼亚）</span><span class="chip">Fyndiq（北欧）</span><span class="chip">B&amp;Q / Wickes（英 DIY）</span>
+        </div>
+        <div class="tabs">
+          <input type="radio" name="t02" id="t02-1" checked>
+          <input type="radio" name="t02" id="t02-2">
+          <div class="tab-bar">
+            <label for="t02-1">US 平台（4 条）</label>
+            <label for="t02-2">EU 平台（2 条）</label>
           </div>
-          <div class="info-card">
-            <h4><span class="plat">Amazon</span>危险品合规新问题（10/26 起）</h4>
-            <p>10/26 起新发或编辑冰箱、空调、冷冻设备等类目 listing 须回答新增危险品合规问题。此条目前仅见于论坛公告，<span class="pending">待官方确认后执行</span>。</p>
-            <p class="src">来源：<span class="pending">待复核</span> <a href="https://sellercentral.amazon.com/seller-forums/discussions/t/9d989276-cb81-40ed-a9d7-2967f2415116" target="_blank" rel="noopener">卖家论坛公告</a></p>
+          <div class="tab-panel p02a">
+            <div class="card-grid">
+              <div class="info-card">
+                <h4><span class="plat">Amazon US/UK/DE</span>旺季费率与黑五徽标节点 <span class="main-tag">主条目</span></h4>
+                <p>旺季配送费 10/15-2027/1/14 生效（涨幅与去年一致）；黑五周/网一库存须 11/5 前到仓方可保证 Prime 徽标；英国、德国站同步收取 Festive Peak Fee。</p>
+                <p class="src">来源：<a href="https://sellercentral.amazon.com/help/hub/reference/external/G4QH4XCRWUXRJBLY" target="_blank" rel="noopener">Amazon 旺季指南</a> · <span class="pending">待复核</span> <a href="https://sellercentral.amazon.com/seller-forums/discussions/t/aac938f0-0760-4baf-9739-5028985ec70e" target="_blank" rel="noopener">卖家论坛</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">Amazon US</span>危险品合规新问题（10/26 起）</h4>
+                <p>10/26 起新发或编辑冰箱、空调、冷冻设备等类目 listing 须回答新增危险品合规问题。此条目前仅见于论坛公告，<span class="pending">待官方确认后执行</span>。</p>
+                <p class="src">来源：<span class="pending">待复核</span> <a href="https://sellercentral.amazon.com/seller-forums/discussions/t/9d989276-cb81-40ed-a9d7-2967f2415116" target="_blank" rel="noopener">卖家论坛公告</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">TikTok Shop US</span>绩效分上线 + 卖家执法新政</h4>
+                <p>10/15 上线 Shop Performance Score；10/6 更新 Seller Enforcement Policy：按账号健康分处罚、资金冻结 45/90/365 天、每违规限 2 次申诉（执法新政为第三方转述，<span class="pending">待复核</span>）。</p>
+                <p class="src">来源：<a href="https://partner.tokopedia.com/docv2/changelog" target="_blank" rel="noopener">TikTok Shop Changelog</a> · <a href="https://orliejohn.com/news/tiktok-shop-publishes-seller-enforcement-policy-and-appeal-timelines" target="_blank" rel="noopener">Orliejohn 解读</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">Walmart US</span>账号治理 + 跨境订舱新规</h4>
+                <p>10/5 起连续 455 天不活跃账号可被暂停（10/2 更新停用/终止政策）；WFS 跨境 FCL 10/5 起可提前 60 天订舱、运价提前 10 天锁定。</p>
+                <p class="src">来源：<a href="https://marketplacelearn.walmart.com/releasenotes" target="_blank" rel="noopener">Walmart Release Notes</a></p>
+              </div>
+            </div>
           </div>
-          <div class="info-card">
-            <h4><span class="plat">TikTok Shop</span>欧盟承运商清单收紧 + 美区绩效分</h4>
-            <p>欧盟站 10/14 起收紧可用承运商清单，清单外物流商上传的轨迹可能不计入履约考核；美国站 10/15 上线 Shop Performance Score。</p>
-            <p class="src">来源：<a href="https://partner.tokopedia.com/docv2/changelog" target="_blank" rel="noopener">TikTok Shop Changelog</a></p>
-          </div>
-          <div class="info-card">
-            <h4><span class="plat">TikTok Shop US</span>卖家执法新政（10/6）</h4>
-            <p>10/6 更新 Seller Enforcement Policy：按账号健康分处罚、资金冻结 45/90/365 天、每违规限 2 次申诉。第三方转述，<span class="pending">待复核</span>。</p>
-            <p class="src">来源：<a href="https://orliejohn.com/news/tiktok-shop-publishes-seller-enforcement-policy-and-appeal-timelines" target="_blank" rel="noopener">Orliejohn 解读</a></p>
-          </div>
-          <div class="info-card">
-            <h4><span class="plat">eBay</span>日韩→欧盟包裹强制 DDP</h4>
-            <p>10/1 起日本/韩国→欧盟 ≤€150 包裹强制 DDP 清关，不使用 DDP 的清关纠纷由卖家担责；10/15 起 eBay Live 交易不再计入卖家表现指标。</p>
-            <p class="src">来源：<a href="https://export.ebay.com/en/fees-regulations-policies/ebay-policies/shipping-policy-japan-korea-eu/" target="_blank" rel="noopener">eBay 出口政策</a> · <a href="https://www.ebay.com/help/policies/selling-policies/seller-performance-policy?id=4347" target="_blank" rel="noopener">卖家表现政策</a></p>
-          </div>
-          <div class="info-card">
-            <h4><span class="plat">Walmart</span>账号治理 + 跨境订舱新规</h4>
-            <p>10/5 起连续 455 天不活跃账号可被暂停（10/2 更新停用/终止政策）；WFS 跨境 FCL 10/5 起可提前 60 天订舱、运价提前 10 天锁定。</p>
-            <p class="src">来源：<a href="https://marketplacelearn.walmart.com/releasenotes" target="_blank" rel="noopener">Walmart Release Notes</a></p>
+          <div class="tab-panel p02b">
+            <div class="card-grid">
+              <div class="info-card">
+                <h4><span class="plat">TikTok Shop EU</span>可用承运商清单收紧</h4>
+                <p>10/14 起收紧欧盟站可用承运商清单，清单外物流商上传的轨迹可能不计入履约考核——使用第三方物流的欧盟卖家需核对清单。</p>
+                <p class="src">来源：<a href="https://partner.tokopedia.com/docv2/changelog" target="_blank" rel="noopener">TikTok Shop Changelog</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">eBay</span>日韩→欧盟包裹强制 DDP</h4>
+                <p>10/1 起日本/韩国→欧盟 ≤€150 包裹强制 DDP 清关（欧盟进口合规要求），不使用 DDP 的清关纠纷由卖家担责；10/15 起 eBay Live 交易不再计入卖家表现指标。</p>
+                <p class="src">来源：<a href="https://export.ebay.com/en/fees-regulations-policies/ebay-policies/shipping-policy-japan-korea-eu/" target="_blank" rel="noopener">eBay 出口政策</a> · <a href="https://www.ebay.com/help/policies/selling-policies/seller-performance-policy?id=4347" target="_blank" rel="noopener">卖家表现政策</a></p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ============ 03 渠道新规 ============ -->
       <section id="s3">
-        <h2><span class="sec-no">03</span>海外物流渠道新规（UPS · DHL · FedEx · DPD · Royal Mail）</h2>
-        <div class="card-grid">
-          <div class="info-card">
-            <h4><span class="plat">UPS</span>国际燃油附加费 48.5%（本周执行）</h4>
-            <p>本周（10/12-18 当周）国际燃油附加费执行 48.5%，为近年高位；旺季期间按周更新，头程报价需按周核对。</p>
-            <p class="src">来源：<a href="https://www.ups.com/assets/resources/media/en-US/air_fuel_surcharge.pdf" target="_blank" rel="noopener">UPS 国际燃油费率表</a></p>
+        <h2><span class="sec-no">03</span>海外物流渠道新规（尾程派送 · 头程干线）</h2>
+        <p class="lead-note">覆盖头程与尾程全部在用渠道：费率类按周核对，B2B 干线按月核对，事件类按实际发生收录。点击页签切换视图。</p>
+        <div class="pool">
+          <span class="pool-t">尾程派送：</span><span class="chip">DPD</span><span class="chip">FedEx</span><span class="chip">UPS</span><span class="chip">GLS</span><span class="chip">Hermes / Evri</span><span class="chip">Colissimo</span><span class="chip">bpost</span><span class="chip">InPost</span><span class="chip">GOFO</span>
+        </div>
+        <div class="pool">
+          <span class="pool-t">头程干线 / 合同物流：</span><span class="chip">DHL Freight</span><span class="chip">DB Schenker</span><span class="chip">DSV</span><span class="chip">Kuehne+Nagel（KN）</span><span class="chip">Rhenus</span><span class="chip">SUUS</span><span class="chip">Cargoboard</span><span class="chip">EU（全称待补）</span>
+        </div>
+        <div class="pool">
+          <span class="pool-t">建议试算对比：</span><span class="chip chip--new" title="中东欧公路货运撮合平台，零担报价竞争充分">Trans.eu</span><span class="chip chip--new" title="欧洲整车（FTL）数字货运平台">sennder</span><span class="chip chip--new" title="数字货代：海运/空运/铁运，报价透明">Forto</span><span class="chip chip--new" title="欧洲托盘集运网络，零担价格有优势">Palletways</span><span class="chip chip--new" title="美国区域尾程派送，价格低于国家承运商">OnTrac / Veho</span><span class="pool-note">以上为可选新增渠道，未与我方现有渠道比价，建议询价后再定</span>
+        </div>
+        <div class="tabs">
+          <input type="radio" name="t03" id="t03-1" checked>
+          <input type="radio" name="t03" id="t03-2">
+          <input type="radio" name="t03" id="t03-3">
+          <div class="tab-bar">
+            <label for="t03-1">尾程派送（4 条）</label>
+            <label for="t03-2">头程干线（本期无新增）</label>
+            <label for="t03-3">运力与事件（3 条）</label>
           </div>
-          <div class="info-card">
-            <h4><span class="plat">DHL Express</span>美出口燃油 37.5% + 旺季附加费</h4>
-            <p>美国出口线燃油附加费 10/19-25 当周升至 37.5%（前周 37.0%）；旺季附加费在美欧主要贸易线上持续执行。</p>
-            <p class="src">来源：<a href="https://www.dhl.com/us-en/home/express/express-shipping/surcharges-fuel-surcharge.html" target="_blank" rel="noopener">DHL 附加费查询</a></p>
+          <div class="tab-panel p03a">
+            <div class="card-grid">
+              <div class="info-card">
+                <h4><span class="plat">UPS</span>国际燃油附加费 48.5%（本周执行）</h4>
+                <p>本周（10/12-18 当周）国际燃油附加费执行 48.5%，为近年高位；旺季期间按周更新，头程报价需按周核对。</p>
+                <p class="src">来源：<a href="https://www.ups.com/assets/resources/media/en-US/air_fuel_surcharge.pdf" target="_blank" rel="noopener">UPS 国际燃油费率表</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">DHL Express</span>美出口燃油 37.5% + 旺季附加费</h4>
+                <p>美国出口线燃油附加费 10/19-25 当周升至 37.5%（前周 37.0%）；旺季附加费在美欧主要贸易线上持续执行。</p>
+                <p class="src">来源：<a href="https://www.dhl.com/us-en/home/express/express-shipping/surcharges-fuel-surcharge.html" target="_blank" rel="noopener">DHL 附加费查询</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">FedEx</span>欧洲燃油回落至 33.0%</h4>
+                <p>10/12-18 当周欧洲线燃油附加费回落至 33.0%（前周 33.5%）；美国本土非标操作费（超大件/额外处理）旺季期间继续执行。</p>
+                <p class="src">来源：<a href="https://www.fedex.com/en-us/shipping/fuel-surcharge.html" target="_blank" rel="noopener">FedEx 燃油附加费</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">DPD / Royal Mail</span>10 月月度与旺季费率更新</h4>
+                <p>DPD 德国 10 月燃油费率按月更新（约 22.5% 档位）；Royal Mail 11/2 起上调 Peak 旺季附加费，大件与非标件涨幅更高。</p>
+                <p class="src">来源：<a href="https://www.dpd.com/de/de/receiving-tools/zuschlaege" target="_blank" rel="noopener">DPD 附加费页</a> · <a href="https://www.royalmail.com/pricing-calculator" target="_blank" rel="noopener">Royal Mail 费率计算器</a></p>
+              </div>
+            </div>
           </div>
-          <div class="info-card">
-            <h4><span class="plat">FedEx</span>欧洲燃油回落至 33.0%</h4>
-            <p>10/12-18 当周欧洲线燃油附加费回落至 33.0%（前周 33.5%）；美国本土非标操作费（超大件/额外处理）旺季期间继续执行。</p>
-            <p class="src">来源：<a href="https://www.fedex.com/en-us/shipping/fuel-surcharge.html" target="_blank" rel="noopener">FedEx 燃油附加费</a></p>
+          <div class="tab-panel p03b">
+            <p class="empty-note">本周（10/6-10/13）Cargoboard、DHL Freight、DB Schenker、DSV、Kuehne+Nagel、Rhenus、SUUS 等 B2B 干线渠道无新增费率或规则调整。此类渠道附加费按月更新、以合同通知为主，每月首周统一核对一次；突发异常（罢工、低水位等）见「运力与事件」页签。</p>
           </div>
-          <div class="info-card">
-            <h4><span class="plat">DPD / Royal Mail</span>10 月月度与旺季费率更新</h4>
-            <p>DPD 德国 10 月燃油费率按月更新（约 22.5% 档位）；Royal Mail 11/2 起上调 Peak 旺季附加费，大件与非标件涨幅更高。</p>
-            <p class="src">来源：<a href="https://www.dpd.com/de/de/receiving-tools/zuschlaege" target="_blank" rel="noopener">DPD 附加费页</a> · <a href="https://www.royalmail.com/pricing-calculator" target="_blank" rel="noopener">Royal Mail 费率计算器</a></p>
-          </div>
-          <div class="info-card">
-            <h4><span class="plat">US · 自然灾害</span>飓风 Isaias 关闭 Port of Mobile（主条目）</h4>
-            <p>10/8 港口进入 Yankee 状态、10/9 深夜升至 Zulu（船舶与码头作业全面暂停），Gulf of Mexico 多个油气平台关停、出口受影响——美湾支线驳船与集卡转运或延误数日。影响范围为该港口及支线，非全美航线。</p>
-            <p class="src">来源：<a href="https://www.morningstar.com/news/dow-jones/202610094709/port-of-mobile-ala-closed-ahead-of-hurricane-isaias-opis" target="_blank" rel="noopener">OPIS/Dow Jones</a> · <a href="https://www.spglobal.com/energy/en/news-research/latest-news/crude-oil/100826-most-usgc-refineries-set-to-avoid-direct-hit-from-hurricane-exports-affected" target="_blank" rel="noopener">S&amp;P Global</a></p>
-          </div>
-          <div class="info-card">
-            <h4><span class="plat">EU · 社会事件</span>德国六港罢工解除，Rhine 拥堵仍重（主条目）</h4>
-            <p>10/6 ver.di 接受资方方案，Hamburg、Bremen/Bremerhaven、Emden、Brake、Wilhelmshaven 无限期罢工暂缓；但 Rhine 低水位致驳船积压：Antwerp 平均等待 36 小时、Rotterdam 56 小时，内陆转运积压消化需 1-2 周。</p>
-            <p class="src">来源：<a href="https://www.dgb.de/service/weiterer-service/tarifmeldungen/tarifmeldung/verdi-tarifkommission-nimmt-angebot-fuer-seehaefen-an/" target="_blank" rel="noopener">DGB 工会公告</a> · <a href="https://theloadstar.com/german-port-strikes-averted-but-low-rhine-still-delaying-barge-cargo/" target="_blank" rel="noopener">The Loadstar</a></p>
-          </div>
-          <div class="info-card">
-            <h4><span class="plat">FR / DE · 调度预警</span>空勤罢工 10/17-21 + 德国秋假</h4>
-            <p>法国空勤人员工会 10/17-21 罢工预警，法航荷航中转航班或受影响；德国秋季学期假 10/5-11/7 各州分批（首周 North Rhine-Westphalia 等已开始），B 端派送上门率阶段性下降。</p>
-            <p class="src">来源：<a href="https://www.bfmtv.com/" target="_blank" rel="noopener">BFMTV 罢工跟踪</a> · <a href="https://www.ferien-info.de/herbstferien/" target="_blank" rel="noopener">德国学期历</a></p>
+          <div class="tab-panel p03c">
+            <div class="card-grid">
+              <div class="info-card">
+                <h4><span class="plat">US · 自然灾害</span>飓风 Isaias 关闭 Port of Mobile <span class="main-tag">主条目</span></h4>
+                <p>10/8 港口进入 Yankee 状态、10/9 深夜升至 Zulu（船舶与码头作业全面暂停），Gulf of Mexico 多个油气平台关停、出口受影响——美湾支线驳船与集卡转运或延误数日。影响范围为该港口及支线，非全美航线。</p>
+                <p class="src">来源：<a href="https://www.morningstar.com/news/dow-jones/202610094709/port-of-mobile-ala-closed-ahead-of-hurricane-isaias-opis" target="_blank" rel="noopener">OPIS/Dow Jones</a> · <a href="https://www.spglobal.com/energy/en/news-research/latest-news/crude-oil/100826-most-usgc-refineries-set-to-avoid-direct-hit-from-hurricane-exports-affected" target="_blank" rel="noopener">S&amp;P Global</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">EU · 社会事件</span>德国六港罢工解除，Rhine 拥堵仍重 <span class="main-tag">主条目</span></h4>
+                <p>10/6 ver.di 接受资方方案，Hamburg、Bremen/Bremerhaven、Emden、Brake、Wilhelmshaven 无限期罢工暂缓；但 Rhine 低水位致驳船积压：Antwerp 平均等待 36 小时、Rotterdam 56 小时，内陆转运积压消化需 1-2 周。</p>
+                <p class="src">来源：<a href="https://www.dgb.de/service/weiterer-service/tarifmeldungen/tarifmeldung/verdi-tarifkommission-nimmt-angebot-fuer-seehaefen-an/" target="_blank" rel="noopener">DGB 工会公告</a> · <a href="https://theloadstar.com/german-port-strikes-averted-but-low-rhine-still-delaying-barge-cargo/" target="_blank" rel="noopener">The Loadstar</a></p>
+              </div>
+              <div class="info-card">
+                <h4><span class="plat">FR / DE · 调度预警</span>空勤罢工 10/17-21 + 德国秋假</h4>
+                <p>法国空勤人员工会 10/17-21 罢工预警，法航荷航中转航班或受影响；德国秋季学期假 10/5-11/7 各州分批（首周 North Rhine-Westphalia 等已开始），B 端派送上门率阶段性下降。</p>
+                <p class="src">来源：<a href="https://www.bfmtv.com/" target="_blank" rel="noopener">BFMTV 罢工跟踪</a> · <a href="https://www.ferien-info.de/herbstferien/" target="_blank" rel="noopener">德国学期历</a></p>
+              </div>
+            </div>
           </div>
         </div>
         <figure>
@@ -393,7 +475,14 @@
           <figcaption><span class="fig-label">指示图</span><strong>主营品类 Q4 机会度</strong>——<strong>评估方法：</strong>由信息小组基于三因子人工评估（销量趋势 / 节日驱动 / 库存节奏），非模型评分；档位含义：高=建议优先备货与仓位锁定，中=结构性机会、按单补货，低=以去库存为主。<strong>边界：</strong>全部分档为市场信号推断，均<span class="pending">待内部订单与询盘数据验证</span>，不构成备货承诺。</figcaption>
         </figure>
 
-        <h3>近 7-30 天热销与全球品类地图（摘要）</h3>
+        <div class="tabs">
+          <input type="radio" name="t04" id="t04-1" checked>
+          <input type="radio" name="t04" id="t04-2">
+          <div class="tab-bar">
+            <label for="t04-1">全球热销品类地图</label>
+            <label for="t04-2">节日与季节备货预测</label>
+          </div>
+          <div class="tab-panel p04a">
         <div class="table-wrap">
           <p class="table-caption">表 · 各国家/地区热销品类实况（近 7-30 天发布的数据）</p>
           <table>
@@ -405,14 +494,13 @@
               <tr><th scope="row">UK</th><td>电商增速全球第一（+8.6%）；健康与个护为热销大类</td><td>2026-09</td><td><a href="https://ecdb.com/blog/global-e-commerce-revenue-september/5268" target="_blank" rel="noopener">ECDB</a> · <a href="https://metricscart.com/bestseller-reports/amazon-uk/categories/Health%20&%20Personal%20Care/" target="_blank" rel="noopener">MetricsCart</a></td></tr>
               <tr><th scope="row">DE</th><td>电商 +5.6%，家居家具与 DIY 紧随个护护理之后</td><td>2026-09</td><td><a href="https://ecdb.com/blog/global-e-commerce-revenue-september/5268" target="_blank" rel="noopener">ECDB</a></td></tr>
               <tr><th scope="row">US · 美妆</th><td>TikTok Shop 升至线上个护/美妆榜第 4 位</td><td>2026-10-05 发布</td><td><a href="https://ecdb.com/blog/us-online-beauty-ranking/5266" target="_blank" rel="noopener">ECDB</a></td></tr>
-              <tr><th scope="row">UAE / Saudi Arabia</th><td>UAE：服装类最大（114 亿迪拉姆）；Saudi：电子（Ugreen 居首）、美妆（Garnier/Dove）领衔</td><td>2025 年报 / 2026-09</td><td><a href="https://dubainewsweek.com/uae-online-shopping-apparel-dhs-11-4-billion/" target="_blank" rel="noopener">Dubai News Week</a> · <a href="https://metricscart.com/bestseller-reports/amazon-ksa/categories/Electronics/" target="_blank" rel="noopener">MetricsCart</a></td></tr>
               <tr><th scope="row">全球</th><td>9 月全球电商收入 $4,346 亿（+6.8%），个护护理品领跑</td><td>2026-09</td><td><a href="https://ecdb.com/blog/global-e-commerce-revenue-september/5268" target="_blank" rel="noopener">ECDB</a></td></tr>
             </tbody>
           </table>
-          <p class="table-takeaway">本表为全景参考；与主营中大件相关度最高的是 DE 家居 DIY 与 US 家具假日预测。第三方数据机构（C 级）口径与平台实盘或有差异。</p>
+          <p class="table-takeaway">本表为全景参考；与主营中大件相关度最高的是 DE 家居 DIY 与 US 家具假日预测。第三方数据口径与平台实盘或有差异。</p>
         </div>
-
-        <h3>未来节日与季节备货预测（按国家和地区）</h3>
+          </div>
+          <div class="tab-panel p04b">
         <div class="table-wrap">
           <p class="table-caption">表 · 未来 6 周节日与季节备货窗口</p>
           <table>
@@ -428,6 +516,8 @@
             </tbody>
           </table>
           <p class="table-takeaway">备货主线：US 黑五（11/5 库存截止）与圣诞礼赠季双峰；EU 抓 11/1 仓发减费切换；气候因子压制冬装、利好储能弹性。</p>
+        </div>
+          </div>
         </div>
       </section>
 
@@ -529,6 +619,16 @@
       <!-- ============ 08 数据面板 ============ -->
       <section id="s8">
         <h2><span class="sec-no">08</span>数据面板：渠道燃油附加费与旺季关键节点（数据截止 10/13）</h2>
+        <div class="tabs">
+          <input type="radio" name="t08" id="t08-1" checked>
+          <input type="radio" name="t08" id="t08-2">
+          <input type="radio" name="t08" id="t08-3">
+          <div class="tab-bar">
+            <label for="t08-1">燃油附加费</label>
+            <label for="t08-2">未来两周关键节点</label>
+            <label for="t08-3">热卖品类与预测</label>
+          </div>
+          <div class="tab-panel p08a">
         <div class="table-wrap">
           <p class="table-caption">表 1 · 尾程渠道燃油附加费执行值（2026-10-12 当周，%）</p>
           <table>
@@ -545,6 +645,8 @@
           </table>
           <p class="table-takeaway">燃油费整体处近年高位；DHL 美线继续上行、FedEx 欧线小幅回落，欧洲境内渠道相对稳定。趋势连续记录自下期起积累（最近 4 周对比）。</p>
         </div>
+          </div>
+          <div class="tab-panel p08b">
         <div class="table-wrap">
           <p class="table-caption">表 2 · 未来两周（至 10/28）关键节点</p>
           <table>
@@ -565,6 +667,8 @@
           </table>
           <p class="table-takeaway">本周最紧迫：Amazon 10/15 费率与 11/5 徽标节点；欧盟直邮客户仓发切换测算应在 10 月内完成（见行动看板 P0）。</p>
         </div>
+          </div>
+          <div class="tab-panel p08c">
         <div class="table-wrap">
           <p class="table-caption">表 3 · 欧美各国本期热卖品类与未来热销预测</p>
           <table>
@@ -579,6 +683,8 @@
             </tbody>
           </table>
           <p class="table-takeaway">预测列为市场信号推断，均<span class="pending">待内部订单数据验证</span>；US 看大促弹性品类与礼赠大件，UK 押健康个护与家具，DE 抓家居 DIY 与户储。</p>
+        </div>
+          </div>
         </div>
       </section>
     </main>
