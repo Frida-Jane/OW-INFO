@@ -357,15 +357,7 @@
       padding: var(--space-5) var(--app-pad);
       text-align: center;
     }
-    .app-title { font-size: 1.5rem; line-height: 1.3; }
-    .app-title .issue-no { font-family: var(--font-mono); font-size: 0.8em; color: var(--accent); }
-    .app-sub { margin-top: 4px; font-size: 1rem; font-weight: 600; color: var(--page-brand-text); }
-    .app-meta {
-      margin-top: 10px; font-size: 13px; color: var(--page-text-muted);
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: var(--space-1) var(--space-4);
-    }
-    .app-meta strong { color: var(--page-text-secondary); font-weight: 600; }
+    .app-title { line-height: 1.3; }
     .app-header .app-title {
       font-size: 1.5rem;
       color: var(--page-brand-active);
@@ -550,9 +542,6 @@
     }
     @media (max-width: 640px) {
       .app-header .app-title { font-size: 1.15rem; }
-      .app-title .issue-no { display: block; margin-top: 2px; }
-      .app-sub { font-size: 0.9rem; }
-      .app-meta { font-size: 12px; gap: 2px var(--space-3); }
       .app-header__inner { padding: var(--space-4) var(--app-pad); }
     }
 
@@ -567,14 +556,7 @@
 <body>
   <header class="app-header">
     <div class="app-header__inner">
-      <h1 class="app-title">海外仓市场资讯简报 · <span class="issue-no" id="headNo">2026 年第 1 期</span></h1>
-      <p class="app-sub" id="headTitle">创刊号：欧盟€2处理费 · 旺季节点 · 品类雷达</p>
-      <p class="app-meta">
-        <span><strong>发布日期：</strong><span id="headPub">2026-10-13</span></span>
-        <span><strong>下次更新：</strong><span id="headNext">2026-10-20（每周一）</span></span>
-        <span><strong>本期制作：</strong>海外仓信息小组</span>
-        <span><strong>审核：</strong>海外仓信息小组</span>
-      </p>
+      <h1 class="app-title">海外仓市场资讯周刊 · <span class="issue-no" id="headNo">20261014 第 1 期</span></h1>
     </div>
   </header>
 
@@ -617,7 +599,7 @@
   <script>
     // === 期数数据（按时间正序：旧 → 新）===
     const ISSUES = [
-      { id: '01', no: '2026 年第 1 期', file: 'issues/issue-2026-01.html', title: '创刊号：欧盟€2处理费·旺季节点·品类雷达', sub: '2026年第1期 · 每周试运行 · 创刊号', date: '2026-10-13', pub: '2026-10-13', next: '2026-10-20（每周一）' },
+      { id: '01', no: '20261014 第 1 期', file: 'issues/issue-2026-01.html', title: '欧盟€2处理费·旺季节点·品类雷达', sub: '2026年第1期 · 每周试运行 · 创刊号', date: '2026-10-13', pub: '2026-10-13', next: '2026-10-20（每周一）' },
     ];
     const NEWEST_ID = ISSUES[ISSUES.length - 1].id;
 
@@ -662,13 +644,7 @@
       $prevBtn.textContent = idx > 0 ? `← 上一期（${ISSUES[idx-1].title}）` : '← 已是最早';
       $nextBtn.textContent = idx < ISSUES.length - 1 ? `下一期（${ISSUES[idx+1].title}）→` : '已是最新 →';
       const $no = document.getElementById('headNo');
-      const $ht = document.getElementById('headTitle');
-      const $hp = document.getElementById('headPub');
-      const $hn = document.getElementById('headNext');
       if ($no) $no.textContent = it.no || '';
-      if ($ht) $ht.textContent = it.title;
-      if ($hp) $hp.textContent = it.pub || it.date || '';
-      if ($hn) $hn.textContent = it.next || '每周一';
       const $fp = document.getElementById('footPrev');
       const $fn = document.getElementById('footNext');
       if ($fp && $fn) {
