@@ -147,6 +147,12 @@
         figure { margin: var(--space-3) 0; }
       }
     .report-intro .intro-h { text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--page-brand-active); border-bottom: none; display: block; padding-bottom: 0; margin: 0 0 var(--space-3); }
+    .sec-sum { margin-top: var(--space-5); padding: var(--space-4); border: 1px solid var(--page-border); border-left: 3px solid var(--accent); border-radius: var(--radius-md); background: var(--accent-soft); }
+    .sec-sum-t { font-size: 13px; font-weight: 600; color: var(--page-brand-active); margin: 0 0 var(--space-2); }
+    .sec-sum dl { display: grid; grid-template-columns: 44px 1fr; gap: var(--space-2) var(--space-3); margin: 0; }
+    .sec-sum dt { font-size: 13px; font-weight: 600; color: var(--page-text-secondary); padding-top: 1px; }
+    .sec-sum dd { margin: 0; font-size: 14px; color: var(--page-text-secondary); }
+    @media (max-width: 640px) { .sec-sum dl { grid-template-columns: 1fr; } .sec-sum dt { padding-top: var(--space-1); } .sec-sum dt:first-child { padding-top: 0; } }
     .tts-row { margin-top: var(--space-4); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
     .tts-label { font-size: 13px; font-weight: 600; color: var(--page-text-secondary); flex: none; }
     .tts-item { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; min-width: 0; }
@@ -332,6 +338,13 @@
             </div>
           </div>
         </div>
+        <div class="sec-sum">
+          <p class="sec-sum-t">02 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>借 Amazon 10/15 旺季费率与 Walmart WFS 订舱新政做客户触点，顺势推 Q4 仓位与中转报价；提醒 TikTok Shop EU 卖家 10/14 起核对承运商清单，清单外物流商可导入我方合规尾程渠道。</dd>
+            <dt>客服</dt><dd>10/15 前协助客户完成黑五入仓排期与高危类目责任险保单核对；TikTok EU 客户逐一确认物流商在清单内，避免轨迹不计入履约考核；Walmart 客户提示保持账号活跃以免触发 455 天不活跃暂停。</dd>
+          </dl>
+        </div>
       </section>
 
       <!-- ============ 03 渠道新规 ============ -->
@@ -421,6 +434,13 @@
           </svg>
           <figcaption><span class="fig-label">数据图</span><strong>渠道燃油附加费对比</strong>——红=超 45% 高位，橙=上行，蓝=稳定/回落，绿=低位。各渠道官方费率页，每周更新。</figcaption>
         </figure>
+        <div class="sec-sum">
+          <p class="sec-sum-t">03 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>本周报价一律按最新燃油值核算（UPS 国际 48.5% 处近年高位），避免用旧费率外报；主动向美湾路线客户提供改港/缓发方案，向欧洲客户推仓内暂存、换标与二次派送服务。</dd>
+            <dt>客服</dt><dd>10/17-21 法国空勤罢工窗口前，对法线中转订单提前同步延误风险；Rhine 拥堵相关订单按"内陆积压 1-2 周消化"口径管理预期，并主动告知下次更新时间。</dd>
+          </dl>
+        </div>
       </section>
 
       <!-- ============ 04 热销与品类雷达 ============ -->
@@ -527,6 +547,13 @@
         </div>
           </div>
         </div>
+        <div class="sec-sum">
+          <p class="sec-sum-t">04 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>储能/锂电按"高机会度"优先推 Q4 仓位锁定；家具客户按"US 控增幅、UK 可跟单"沟通；黑五礼赠型中大件（雕刻机、智能家居）10 月内推动客户完成入仓，欧盟直邮客户同步推 11/1 仓发减费切换。</dd>
+            <dt>客服</dt><dd>备好两轮车认证 FAQ（US 301 关税、UL 2849/UL 2271、EU 电池护照时间表）；万圣节补货窗口已收尾，客户尾单需求如实告知时效风险，不做保时承诺。</dd>
+          </dl>
+        </div>
       </section>
 
       <!-- ============ 05 同行动向 ============ -->
@@ -559,6 +586,13 @@
             <p class="src">来源：<a href="https://gxologistics.gcs-web.com/news-releases/news-release-details/gxo-and-exotec-partner-advance-fashion-fulfillment-guess" target="_blank" rel="noopener">GXO 官方</a></p>
           </div>
         </div>
+        <div class="sec-sum">
+          <p class="sec-sum-t">05 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>WFS ITS 免费期 10/22 转计费，在此之前向 WFS 客户推送跨仓调拨承接方案与第三方仓对比报价；对 FBA 旺季附加费敏感客户（10/15 已生效）推我方仓发成本对比。</dd>
+            <dt>客服</dt><dd>统一口径回应"同行新仓/费率是否影响我们"：我方费率与产能不受影响，旺季保障承诺可书面确认；同步记录客户时效期望的变化，反馈至运营。</dd>
+          </dl>
+        </div>
       </section>
 
       <!-- ============ 06 海外仓监管 ============ -->
@@ -581,6 +615,13 @@
             <p>PPWR 已生效：2030 年起分品类强制再生料比例，接触敏感类要求更高；仓内包材采购需提前按此选型。</p>
             <p class="src">来源：<a href="https://environment.ec.europa.eu/topics/waste-and-recycling/packaging-waste_en" target="_blank" rel="noopener">欧委会环境总司</a></p>
           </div>
+        </div>
+        <div class="sec-sum">
+          <p class="sec-sum-t">06 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>德国新客户签约前核查 LUCID 包装登记状态，把合规能力作为成单卖点；电池类客户提前沟通 CPSC eFiling 数据准备，抢占合规服务先机。</dd>
+            <dt>客服</dt><dd>客户问询包材、下架等问题时按合规底线口径答复；发现无登记发货等违规风险，立即升级至合规负责人跟进，不自行承诺处理结果。</dd>
+          </dl>
         </div>
       </section>
 
@@ -622,6 +663,13 @@
           </svg>
           <figcaption><span class="fig-label">流程图</span><strong>欧盟海关改革关键节点</strong>——红=未来两周内硬节点。来源：<a href="https://taxation-customs.ec.europa.eu/eu-customs-reform_en" target="_blank" rel="noopener">欧盟委员会</a> · <a href="https://www.adm.gov.it/portale/en/dazi-spedizioni-modico-valore" target="_blank" rel="noopener">意大利海关署</a>。</figcaption>
         </figure>
+        <div class="sec-sum">
+          <p class="sec-sum-t">07 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>10 月内完成欧盟直邮客户的转仓发测算与谈判，赶在 11/1 前签约切换；储能/两轮车头程报价预留 301 关税与查验缓冲，避免后续被动调价。</dd>
+            <dt>客服</dt><dd>直邮件客户逐户确认 PID 申报字段补齐进度（10 月底前完成）；电池类目头程提前告知查验概率上升，建议预留发货缓冲并跟踪首批清关结果。</dd>
+          </dl>
+        </div>
       </section>
 
       <!-- ============ 08 数据面板 ============ -->
@@ -697,6 +745,13 @@
           <p class="table-takeaway">预测列为市场信号推断，均<span class="pending">待内部订单数据验证</span>；US 看大促弹性品类与礼赠大件，UK 押健康个护与家具，DE 抓家居 DIY 与户储。</p>
         </div>
           </div>
+        </div>
+        <div class="sec-sum">
+          <p class="sec-sum-t">08 板块小结 · 建议</p>
+          <dl>
+            <dt>销售</dt><dd>每周一以表 1 最新燃油值刷新报价后再外发客户；按表 2 节点做 10/15-11/5 客户触达排期，重点覆盖 Amazon 三节点与欧盟切换客户。</dd>
+            <dt>客服</dt><dd>表 2 各节点提前 3 天提醒对应客户；bpost 11/27-12/24 国内件 €1 附加费，提前告知比利时线路客户并更新费用说明。</dd>
+          </dl>
         </div>
       </section>
     </main>
