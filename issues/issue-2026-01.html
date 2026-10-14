@@ -147,6 +147,12 @@
         figure { margin: var(--space-3) 0; }
       }
     .report-intro .intro-h { text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--page-brand-active); border-bottom: none; display: block; padding-bottom: 0; margin: 0 0 var(--space-3); }
+    .tts-row { margin-top: var(--space-4); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+    .tts-label { font-size: 13px; font-weight: 600; color: var(--page-text-secondary); flex: none; }
+    .tts-item { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; min-width: 0; }
+    .tts-tag { font-size: 12px; color: var(--page-text-secondary); background: var(--page-bg); border: 1px solid var(--page-border); border-radius: var(--radius-pill); padding: 1px var(--space-2); white-space: nowrap; }
+    .tts-item audio { height: 34px; max-width: 250px; }
+    @media (max-width: 640px) { .tts-row { flex-direction: column; align-items: flex-start; } .tts-item audio { max-width: 100%; } }
     </style>
     <header class="report-intro">
       <div class="report-intro__surface">
@@ -157,6 +163,17 @@
             <span><strong>下次更新：</strong>2026-10-20（每周一）</span>
             <span><strong>本期制作：</strong>海外仓信息小组</span>
             <span><strong>审核：</strong>海外仓信息小组</span>
+          </div>
+          <div class="tts-row">
+            <span class="tts-label">语音播报</span>
+            <div class="tts-item">
+              <span class="tts-tag">精简版 · 本期核心与判断 约7分钟</span>
+              <audio controls preload="none" src="../audio/issue-2026-01-brief.mp3"></audio>
+            </div>
+            <div class="tts-item">
+              <span class="tts-tag">全文版 · 全部章节 约24分钟</span>
+              <audio controls preload="none" src="../audio/issue-2026-01-full.mp3"></audio>
+            </div>
           </div>
           <p class="report-intro__summary" style="margin-bottom: var(--space-1);"><strong>本期核心：</strong></p>
           <ol class="pt-list" style="font-size: 15px; margin-top: 0;">

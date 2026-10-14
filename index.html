@@ -754,8 +754,8 @@
         $host.innerHTML = '';
         $host.appendChild(article);
         // 修正相对路径：issue 文件在 issues/ 子目录，SPA 注入到 index.html 根目录
-        article.querySelectorAll('img[src^="../"]').forEach(img => {
-          img.src = img.getAttribute('src').replace(/^\.\.\//, '');
+        article.querySelectorAll('[src^="../"]').forEach(el => {
+          el.src = el.getAttribute('src').replace(/^\.\.\//, '');
         });
         $host.dataset.loaded = '1';
         buildToc(article);
