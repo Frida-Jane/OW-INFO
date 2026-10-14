@@ -50,13 +50,82 @@ const raw = readFileSync(resolve(__dirname, "..", htmlPath), "utf-8");
 const article = (raw.match(/<article class="page">[\s\S]*<\/article>/) || [raw])[0];
 const clean = stripNoise(article);
 
-// 精简版：本期核心（蓝区 pt-list）+ 01 判断与行动
+// ---------- 分层提取（控制时长：精简≈3分钟，全文≈10分钟） ----------
+function firstSent(html, max) {
+  const t = htmlToText(html).replace(/\s+/g, " ");
+  const m = t.match(/^[\s\S]*?[。！？；]/);
+  let s = m ? m[0] : t;
+  if (s.length > max) s = s.slice(0, max) + "……";
+  return s;
+}
+// 01 判断块：h4 标题 + 编辑判断
+function extractRecs(s1Html, judgeMax = null) {
+  return s1Html.split(/<div class="rec">/).slice(1).map(p => {
+    const block = p.split(/<\/div>/)[0]; // rec 内无嵌套 div
+    const h4 = (block.match(/<h4>[\s\S]*?<\/h4>/) || [""])[0].replace(/<span class="rec-no">[\s\S]*?<\/span>/, "");
+    const judge = (block.match(/<dt class="edj">[\s\S]*?<dd>([\s\S]*?)<\/dd>/) || [,""])[1];
+    const jt = htmlToText(judge).replace(/\s+/g, " ");
+    return htmlToText(h4) + "。" + (judgeMax && jt.length > judgeMax ? jt.slice(0, judgeMax) + "……" : jt);
+  });
+}
+// info-card：h4 标题 + 正文首句
+function extractCards(secHtml, maxSent) {
+  return secHtml.split(/<div class="info-card/).slice(1).map(p => {
+    const block = p.split(/<\/section>/)[0];
+    const h4 = htmlToText((block.match(/<h4>[\s\S]*?<\/h4>/) || [""])[0]);
+    const firstP = (block.match(/<p(?![^>]*class="src")[^>]*>[\s\S]*?<\/p>/) || [""])[0];
+    return h4 + (firstP ? "。" + firstSent(firstP, maxSent) : "");
+  }).filter(s => s.trim());
+}
+function sectionBodies() {
+  return clean.split(/<section id="s/).slice(1).map(s => ({
+    id: "s" + (s.match(/^(\d+)/) || ["", "?"])[1],
+    body: s.split(/<\/section>/)[0],
+  }));
+}
+function h2Text(body) {
+  const h2 = (body.match(/<h2>[\s\S]*?<\/h2>/) || [""])[0];
+  return htmlToText(h2.replace(/<span class="hint-pop"[\s\S]*?<\/span>/g, ""));
+}
+
+// 精简版：本期核心 5 点 + 01 各判断标题与编辑判断（总时长 >3.5 分钟则判断截 80 字）
 const coreOl = (clean.match(/<ol class="pt-list"[\s\S]*?<\/ol>/) || [""])[0];
 const s1 = (clean.match(/<section id="s1"[\s\S]*?<\/section>/) || [""])[0];
-const briefText = [coreOl, s1].map(htmlToText).join("\n");
+function buildBrief() {
+  let judgeMax = null;
+  let parts = [];
+  for (const jm of [null, 80]) {
+    judgeMax = jm;
+    parts = [htmlToText(coreOl), ...extractRecs(s1, jm)];
+    const chars = parts.join("").length;
+    if (chars <= 800) break;
+  }
+  return parts.join("\n");
+}
+const briefText = buildBrief();
 
-// 全文版：article 全部（表格/悬浮/来源行已在 htmlToText 中剔除）
-const fullText = htmlToText(clean);
+// 全文版：精简内容 + 02-07 各板块 h2 与卡片首句 + 08 表结论（>10.5 分钟自动收紧首句）
+function buildFull() {
+  let maxSent = 45;
+  let parts = [];
+  for (const ms of [45, 32, 22]) {
+    maxSent = ms;
+    parts = [htmlToText(coreOl), ...extractRecs(s1, 80)];
+    for (const { id, body } of sectionBodies()) {
+      if (id === "s1") continue;
+      parts.push(h2Text(body));
+      parts.push(...extractCards(body, ms));
+      if (id === "s8") {
+        const tk = body.match(/<p class="table-takeaway">[\s\S]*?<\/p>/g) || [];
+        parts.push(...tk.map(htmlToText));
+      }
+    }
+    const chars = parts.join("").length;
+    if (chars <= 2600) break;
+  }
+  return parts.join("\n");
+}
+const fullText = buildFull();
 
 function compose(text, isFull) {
   let out = `${issueLine}。本期主题：${issueTitle}。\n`;
