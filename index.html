@@ -484,7 +484,12 @@
       border-top: 1px solid var(--page-border);
       font-size: 12.5px;
       color: var(--page-text-muted);
+      text-align: center;
     }
+    .foot-nav a { color: var(--page-brand); text-decoration: none; font-weight: 600; }
+    .foot-nav a:hover { text-decoration: underline; }
+    .foot-nav a.off { color: var(--page-text-disabled); cursor: default; pointer-events: none; }
+    .foot-sep { margin: 0 var(--space-3); color: var(--page-border); }
 
     /* === 右侧：大纲 TOC === */
     .toc { list-style: none; }
@@ -587,7 +592,13 @@
     </aside>
   </div>
 
-  <footer class="app-footer">海外仓简报小组制作 · 正文区分【事实】与【判断】 · 分析观点不代表公司立场 · 每周一自动生成草稿、人工审核后发布</footer>
+  <footer class="app-footer">
+    <nav class="foot-nav">
+      <a href="#" id="footPrev" rel="prev">← 上一期</a>
+      <span class="foot-sep">|</span>
+      <a href="#" id="footNext" rel="next">下一期 →</a>
+    </nav>
+  </footer>
 
   <script>
     // === 期数数据（按时间正序：旧 → 新）===
@@ -636,6 +647,14 @@
       $nextBtn.disabled = idx >= ISSUES.length - 1;
       $prevBtn.textContent = idx > 0 ? `← 上一期（${ISSUES[idx-1].title}）` : '← 已是最早';
       $nextBtn.textContent = idx < ISSUES.length - 1 ? `下一期（${ISSUES[idx+1].title}）→` : '已是最新 →';
+      const $fp = document.getElementById('footPrev');
+      const $fn = document.getElementById('footNext');
+      if ($fp && $fn) {
+        if (idx > 0) { $fp.href = '#issue-' + ISSUES[idx-1].id; $fp.textContent = `← 上一期：${ISSUES[idx-1].title}`; $fp.classList.remove('off'); }
+        else { $fp.removeAttribute('href'); $fp.textContent = '← 已是最早'; $fp.classList.add('off'); }
+        if (idx < ISSUES.length - 1) { $fn.href = '#issue-' + ISSUES[idx+1].id; $fn.textContent = `下一期：${ISSUES[idx+1].title} →`; $fn.classList.remove('off'); }
+        else { $fn.removeAttribute('href'); $fn.textContent = '已是最新 →'; $fn.classList.add('off'); }
+      }
     }
 
     // === 从期 HTML 文档中提取 <article class="page"> ===

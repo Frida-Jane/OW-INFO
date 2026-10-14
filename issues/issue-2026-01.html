@@ -127,6 +127,12 @@
       main > section > h2 .sec-no { display: inline-block; background: var(--accent); color: #fff; padding: 0 8px; border-radius: 6px; font-size: 0.78em; line-height: 1.6; }
       .main-tag { display: inline-block; padding: 0 8px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; vertical-align: 0.1em; }
       .empty-note { padding: var(--space-4); border: 1px dashed var(--page-border); border-radius: var(--radius-lg); background: var(--page-surface); color: var(--muted); font-size: 13.5px; }
+
+      /* 标题提示图标：hover/focus 显示统计范围与固定池详情 */
+      h2 .hint { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--page-brand); color: var(--page-brand); font-size: 11px; font-style: normal; font-weight: 700; cursor: help; user-select: none; line-height: 1; flex: none; align-self: center; }
+      h2 .hint-pop { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); display: none; width: min(600px, 86vw); padding: 12px 16px; background: #fff; border: 1px solid var(--page-border); border-radius: 10px; box-shadow: 0 8px 28px rgba(31,35,40,.14); font-size: 12.5px; font-weight: 400; line-height: 1.9; color: var(--text-secondary); text-align: left; z-index: 40; }
+      h2 .hint-pop b { color: var(--ink); }
+      h2 .hint:hover .hint-pop, h2 .hint:focus .hint-pop { display: block; }
     </style>
     <header class="report-intro">
       <div class="report-intro__surface">
@@ -157,7 +163,7 @@
             <a class="role-chip" href="#s3">客服 · 渠道与异常</a>
             <a class="role-chip" href="#s8">供应链 · 费率与节点</a>
           </div>
-          <p class="report-intro__summary" style="margin-top: var(--space-3); font-size: 13px; color: var(--muted);">阅读说明：01 判断与行动为本周必读，02-07 为专题详情（含页签切换），08 为数据附录。统计范围：平台与监管聚焦美国与欧盟各国，物流渠道覆盖头程与尾程；标 <span class="pending">待复核</span> 的信息尚未交叉验证，执行前请先确认官方口径。</p>
+          <p class="report-intro__summary" style="margin-top: var(--space-3); font-size: 13px; color: var(--muted);">阅读说明：01 本周必读 · 02-07 专题详情（页签切换）· 08 数据附录；范围：美欧平台、头尾程渠道。标 <span class="pending">待复核</span> = 尚未交叉验证。</p>
         </div>
       </div>
     </header>
@@ -260,14 +266,7 @@
 
       <!-- ============ 02 平台新规 ============ -->
       <section id="s2">
-        <h2><span class="sec-no">02</span>海外电商平台新规（US · EU）</h2>
-        <p class="lead-note">近一周（10/6-10/13）发布或更新的平台政策。统计范围：美国与欧盟各国平台，不含其他亚洲、中东、非洲市场。点击页签切换市场。</p>
-        <div class="pool">
-          <span class="pool-t">US 固定跟踪：</span><span class="chip">Amazon</span><span class="chip">Walmart</span><span class="chip">eBay</span><span class="chip">TikTok Shop</span><span class="chip">Temu</span><span class="chip">SHEIN</span><span class="chip">Wayfair（家具家居）</span><span class="chip">Home Depot / Lowe's</span><span class="chip">Target</span><span class="chip">Best Buy</span><span class="chip">Etsy</span><span class="chip">Newegg</span>
-        </div>
-        <div class="pool">
-          <span class="pool-t">EU 固定跟踪：</span><span class="chip">OTTO（德）</span><span class="chip">Kaufland.de（德/中东欧）</span><span class="chip">Allegro（波兰）</span><span class="chip">ManoMano（法/家居园艺）</span><span class="chip">Bol.com（荷兰）</span><span class="chip">Cdiscount（法）</span><span class="chip">Wayfair Europe</span><span class="chip">Zalando</span><span class="chip">eMAG（罗马尼亚）</span><span class="chip">Fyndiq（北欧）</span><span class="chip">B&amp;Q / Wickes（英 DIY）</span>
-        </div>
+        <h2><span class="sec-no">02</span>海外电商平台新规（US · EU）<span class="hint" tabindex="0" aria-label="统计范围与固定跟踪平台">i<span class="hint-pop"><b>统计范围</b>：美国与欧盟各国平台，不含其他亚洲、中东、非洲市场；收录近一周（10/6-10/13）发布或更新的政策。<br><b>US 固定跟踪</b>：Amazon、Walmart、eBay、TikTok Shop、Temu、SHEIN、Wayfair（家具家居）、Home Depot / Lowe's、Target、Best Buy、Etsy、Newegg<br><b>EU 固定跟踪</b>：OTTO（德）、Kaufland.de（德/中东欧）、Allegro（波兰）、ManoMano（法/家居园艺）、Bol.com（荷兰）、Cdiscount（法）、Wayfair Europe、Zalando、eMAG（罗马尼亚）、Fyndiq（北欧）、B&amp;Q / Wickes（英 DIY）</span></span></h2>
         <div class="tabs">
           <input type="radio" name="t02" id="t02-1" checked>
           <input type="radio" name="t02" id="t02-2">
@@ -318,17 +317,7 @@
 
       <!-- ============ 03 渠道新规 ============ -->
       <section id="s3">
-        <h2><span class="sec-no">03</span>海外物流渠道新规（尾程派送 · 头程干线）</h2>
-        <p class="lead-note">覆盖头程与尾程全部在用渠道：费率类按周核对，B2B 干线按月核对，事件类按实际发生收录。点击页签切换视图。</p>
-        <div class="pool">
-          <span class="pool-t">尾程派送：</span><span class="chip">DPD</span><span class="chip">FedEx</span><span class="chip">UPS</span><span class="chip">GLS</span><span class="chip">Hermes / Evri</span><span class="chip">Colissimo</span><span class="chip">bpost</span><span class="chip">InPost</span><span class="chip">GOFO</span>
-        </div>
-        <div class="pool">
-          <span class="pool-t">头程干线 / 合同物流：</span><span class="chip">DHL Freight</span><span class="chip">DB Schenker</span><span class="chip">DSV</span><span class="chip">Kuehne+Nagel（KN）</span><span class="chip">Rhenus</span><span class="chip">SUUS</span><span class="chip">Cargoboard</span><span class="chip" title="起运地 → 欧盟收货地址的端到端线路产品（非单一承运商）">EU 全程</span>
-        </div>
-        <div class="pool">
-          <span class="pool-t">建议试算对比：</span><span class="chip chip--new" title="中东欧公路货运撮合平台，零担报价竞争充分">Trans.eu</span><span class="chip chip--new" title="欧洲整车（FTL）数字货运平台">sennder</span><span class="chip chip--new" title="数字货代：海运/空运/铁运，报价透明">Forto</span><span class="chip chip--new" title="欧洲托盘集运网络，零担价格有优势">Palletways</span><span class="chip chip--new" title="美国区域尾程派送，价格低于国家承运商">OnTrac / Veho</span><span class="pool-note">以上为可选新增渠道，未与我方现有渠道比价，建议询价后再定</span>
-        </div>
+        <h2><span class="sec-no">03</span>海外物流渠道新规（尾程派送 · 头程干线）<span class="hint" tabindex="0" aria-label="覆盖范围与固定渠道池">i<span class="hint-pop"><b>覆盖范围</b>：头程与尾程全部在用渠道；费率类按周核对，B2B 干线按月核对，事件类按实际发生收录。<br><b>尾程派送</b>：DPD、FedEx、UPS、GLS、Hermes/Evri、Colissimo、bpost、InPost、GOFO<br><b>头程干线 / 合同物流</b>：DHL Freight、DB Schenker、DSV、Kuehne+Nagel（KN）、Rhenus、SUUS、Cargoboard、EU 全程（起运地→欧盟收货地址的端到端线路）<br><b>建议试算对比</b>：Trans.eu、sennder、Forto、Palletways、OnTrac / Veho（未与我方现有渠道比价，询价后再定）</span></span></h2>
         <div class="tabs">
           <input type="radio" name="t03" id="t03-1" checked>
           <input type="radio" name="t03" id="t03-2">
@@ -411,7 +400,7 @@
               <line x1="155" y1="44" x2="155" y2="252" stroke="#D1D9E0"/>
             </g>
           </svg>
-          <figcaption><span class="fig-label">数据图</span><strong>渠道燃油附加费对比</strong>——红=超 45% 高位，橙=上行中，蓝=稳定/回落，绿=低位。来源均为各渠道官方费率页（见上方卡片）。数值为当周执行值，每周一更新，以渠道官网实时数据为准。</figcaption>
+          <figcaption><span class="fig-label">数据图</span><strong>渠道燃油附加费对比</strong>——红=超 45% 高位，橙=上行，蓝=稳定/回落，绿=低位。各渠道官方费率页，每周更新。</figcaption>
         </figure>
       </section>
 
@@ -630,20 +619,24 @@
           </div>
           <div class="tab-panel p08a">
         <div class="table-wrap">
-          <p class="table-caption">表 1 · 尾程渠道燃油附加费执行值（2026-10-12 当周，%）</p>
+          <p class="table-caption">表 1 · 尾程渠道燃油与能源附加费执行值（2026-10-12 当周，%）</p>
           <table>
             <thead>
               <tr><th>渠道</th><th class="num">本周值</th><th>环比</th><th>更新节奏</th><th>来源</th></tr>
             </thead>
             <tbody>
-              <tr><th scope="row">UPS 国际</th><td class="num">48.5</td><td>持平</td><td>每周一</td><td><a href="https://www.ups.com/assets/resources/media/en-US/air_fuel_surcharge.pdf" target="_blank" rel="noopener">UPS</a></td></tr>
-              <tr><th scope="row">DHL Express 美出口</th><td class="num">37.5</td><td>+0.5pp（10/19-25 升）</td><td>每周一</td><td><a href="https://www.dhl.com/us-en/home/express/express-shipping/surcharges-fuel-surcharge.html" target="_blank" rel="noopener">DHL</a></td></tr>
-              <tr><th scope="row">FedEx 欧洲</th><td class="num">33.0</td><td>-0.5pp（回落）</td><td>每周一</td><td><a href="https://www.fedex.com/en-us/shipping/fuel-surcharge.html" target="_blank" rel="noopener">FedEx</a></td></tr>
-              <tr><th scope="row">DPD 德国</th><td class="num">22.5</td><td>月更持平</td><td>每月</td><td><a href="https://www.dpd.com/de/de/receiving-tools/zuschlaege" target="_blank" rel="noopener">DPD</a></td></tr>
+              <tr><th scope="row">UPS 国际</th><td class="num">48.5</td><td>持平</td><td>每周</td><td><a href="https://www.ups.com/assets/resources/media/en-US/air_fuel_surcharge.pdf" target="_blank" rel="noopener">UPS</a></td></tr>
+              <tr><th scope="row">DHL Express 美出口</th><td class="num">37.5</td><td>+0.5pp（10/19-25 升）</td><td>每周</td><td><a href="https://www.dhl.com/us-en/home/express/express-shipping/surcharges-fuel-surcharge.html" target="_blank" rel="noopener">DHL</a></td></tr>
+              <tr><th scope="row">FedEx 欧洲</th><td class="num">33.0</td><td>-0.5pp（回落）</td><td>每周</td><td><a href="https://www.fedex.com/en-us/shipping/fuel-surcharge.html" target="_blank" rel="noopener">FedEx</a></td></tr>
+              <tr><th scope="row">GLS 德国</th><td class="num">31.5</td><td>持平（能源含柴油）</td><td>每月</td><td><a href="https://www.gls-pakete.de/en/business-shipping/actual-topics/surcharge-diesel-and-energy" target="_blank" rel="noopener">GLS</a></td></tr>
+              <tr><th scope="row">DPD 德国</th><td class="num">22.5</td><td>持平</td><td>每月</td><td><a href="https://www.dpd.com/de/de/receiving-tools/zuschlaege" target="_blank" rel="noopener">DPD</a></td></tr>
+              <tr><th scope="row">InPost UK</th><td class="num">11.0-20.0</td><td>按合同生效日分档</td><td>每月</td><td><a href="https://inpost.co.uk/client-zone/fuel-surcharges" target="_blank" rel="noopener">InPost</a></td></tr>
               <tr><th scope="row">Royal Mail</th><td class="num">16.0</td><td>Peak 11/2 起上调</td><td>旺季单独调整</td><td><a href="https://www.royalmail.com/pricing-calculator" target="_blank" rel="noopener">Royal Mail</a></td></tr>
+              <tr><th scope="row">bpost</th><td class="num">9.5-15.0</td><td>按产品线分档，月度浮动</td><td>每月</td><td><a href="https://www.bpost.be/fr/tarifs-2026" target="_blank" rel="noopener">bpost</a></td></tr>
+              <tr><th scope="row">Hermes/Evri · Colissimo · GOFO</th><td class="num">—</td><td>合同价，无公开费率页</td><td>按合同</td><td>—</td></tr>
             </tbody>
           </table>
-          <p class="table-takeaway">燃油费整体处近年高位；DHL 美线继续上行、FedEx 欧线小幅回落，欧洲境内渠道相对稳定。趋势连续记录自下期起积累（最近 4 周对比）。</p>
+          <p class="table-takeaway">燃油费整体处近年高位；DHL 美线继续上行、FedEx 欧线小幅回落，欧洲境内渠道相对稳定。另：bpost 11/27-12/24 对国内件加收 €1/件年末附加费。</p>
         </div>
           </div>
           <div class="tab-panel p08b">
