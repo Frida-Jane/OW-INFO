@@ -105,13 +105,13 @@ function buildBrief() {
 }
 const briefText = buildBrief();
 
-// 全文版：精简内容 + 02-07 各板块 h2 与卡片首句 + 08 表结论（超过 ~8 分钟自动收紧首句）
+// 全文版：01 判断摘要 + 02-07 各板块 h2 与卡片首句 + 08 表结论（超过 ~8 分钟自动收紧首句；本期核心 5 点由精简版承载）
 function buildFull() {
   let maxSent = 45;
   let parts = [];
   for (const ms of [45, 32, 22, 14]) {
     maxSent = ms;
-    parts = [htmlToText(coreOl), ...extractRecs(s1, 40)];
+    parts = [...extractRecs(s1, 60)];
     for (const { id, body } of sectionBodies()) {
       if (id === "s1") continue;
       parts.push(h2Text(body));
@@ -127,19 +127,6 @@ function buildFull() {
   return parts.join("\n");
 }
 const fullText = buildFull();
-
-if (process.env.DEBUG_CHARS) {
-  const stat = [];
-  stat.push(["core", htmlToText(coreOl).length], ["recs", extractRecs(s1, 50).join("").length]);
-  for (const { id, body } of sectionBodies()) {
-    if (id === "s1") continue;
-    stat.push([id, h2Text(body).length + extractCards(body, 14).join("").length
-      + (id === "s8" ? ((body.match(/<p class="table-takeaway">[\s\S]*?<\/p>/g) || []).map(htmlToText).join("").length) : 0)]);
-  }
-  console.log("DEBUG full chars:", fullText.length, "| brief chars:", briefText.length);
-  console.log("breakdown:", stat.map(([k, v]) => `${k}=${v}`).join(" "));
-  process.exit(0);
-}
 
 function compose(text, isFull) {
   let out = `${issueLine}。本期主题：${issueTitle}。\n`;
