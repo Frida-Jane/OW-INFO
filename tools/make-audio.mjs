@@ -68,13 +68,14 @@ function extractRecs(s1Html, judgeMax = null) {
     return htmlToText(h4) + "。" + (judgeMax && jt.length > judgeMax ? jt.slice(0, judgeMax) + "……" : jt);
   });
 }
-// info-card：h4 标题 + 正文首句
-function extractCards(secHtml, maxSent) {
+// info-card：h4 标题（超长截断）+ 正文首句
+function extractCards(secHtml, maxSent, maxTitle = 20) {
   return secHtml.split(/<div class="info-card/).slice(1).map(p => {
     const block = p.split(/<\/section>/)[0];
     const h4 = htmlToText((block.match(/<h4>[\s\S]*?<\/h4>/) || [""])[0]);
+    const title = h4.length > maxTitle ? h4.slice(0, maxTitle) : h4;
     const firstP = (block.match(/<p(?![^>]*class="src")[^>]*>[\s\S]*?<\/p>/) || [""])[0];
-    return h4 + (firstP ? "。" + firstSent(firstP, maxSent) : "");
+    return title + (firstP ? "。" + firstSent(firstP, maxSent) : "");
   }).filter(s => s.trim());
 }
 function sectionBodies() {
@@ -104,13 +105,13 @@ function buildBrief() {
 }
 const briefText = buildBrief();
 
-// 全文版：精简内容 + 02-07 各板块 h2 与卡片首句 + 08 表结论（>10.5 分钟自动收紧首句）
+// 全文版：精简内容 + 02-07 各板块 h2 与卡片首句 + 08 表结论（超过 ~8 分钟自动收紧首句）
 function buildFull() {
   let maxSent = 45;
   let parts = [];
-  for (const ms of [45, 32, 22]) {
+  for (const ms of [45, 32, 22, 14]) {
     maxSent = ms;
-    parts = [htmlToText(coreOl), ...extractRecs(s1, 80)];
+    parts = [htmlToText(coreOl), ...extractRecs(s1, 40)];
     for (const { id, body } of sectionBodies()) {
       if (id === "s1") continue;
       parts.push(h2Text(body));
@@ -121,11 +122,24 @@ function buildFull() {
       }
     }
     const chars = parts.join("").length;
-    if (chars <= 2600) break;
+    if (chars <= 2500) break;
   }
   return parts.join("\n");
 }
 const fullText = buildFull();
+
+if (process.env.DEBUG_CHARS) {
+  const stat = [];
+  stat.push(["core", htmlToText(coreOl).length], ["recs", extractRecs(s1, 50).join("").length]);
+  for (const { id, body } of sectionBodies()) {
+    if (id === "s1") continue;
+    stat.push([id, h2Text(body).length + extractCards(body, 14).join("").length
+      + (id === "s8" ? ((body.match(/<p class="table-takeaway">[\s\S]*?<\/p>/g) || []).map(htmlToText).join("").length) : 0)]);
+  }
+  console.log("DEBUG full chars:", fullText.length, "| brief chars:", briefText.length);
+  console.log("breakdown:", stat.map(([k, v]) => `${k}=${v}`).join(" "));
+  process.exit(0);
+}
 
 function compose(text, isFull) {
   let out = `${issueLine}。本期主题：${issueTitle}。\n`;
