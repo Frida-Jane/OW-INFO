@@ -156,16 +156,32 @@ async function synth(text, outFile) {
   const segs = splitText(text);
   const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const chunks = [];
+  // 每段独立连接；服务端偶发拒绝 WebSocket 升级（返回 200），段级重试 4 次后再放弃
+  async function synthSeg(seg, attempt = 1) {
+    const tts = new MsEdgeTTS();
+    try {
+      await tts.setMetadata(VOICE, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+      const { audioStream } = tts.toStream(esc(seg));
+      const buf = await new Promise((ok, bad) => {
+        const parts = [];
+        audioStream.on("data", c => parts.push(c));
+        audioStream.on("end", () => ok(Buffer.concat(parts)));
+        audioStream.on("error", bad);
+      });
+      return buf;
+    } catch (e) {
+      if (attempt < 4) {
+        console.warn(`段 ${segs.indexOf(seg) + 1}/${segs.length} 失败（${e.message}），第 ${attempt + 1} 次重试…`);
+        await new Promise(r => setTimeout(r, 1500 * attempt));
+        return synthSeg(seg, attempt + 1);
+      }
+      throw e;
+    } finally {
+      tts.close();
+    }
+  }
   for (const seg of segs) {
-    const tts = new MsEdgeTTS(); // 每段独立连接，避免复用断流
-    await tts.setMetadata(VOICE, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
-    const { audioStream } = tts.toStream(esc(seg));
-    await new Promise((ok, bad) => {
-      audioStream.on("data", c => chunks.push(c));
-      audioStream.on("end", ok);
-      audioStream.on("error", bad);
-    });
-    tts.close();
+    chunks.push(await synthSeg(seg));
   }
   const buf = Buffer.concat(chunks);
   const outPath = join(__dirname, "..", "audio", outFile);
